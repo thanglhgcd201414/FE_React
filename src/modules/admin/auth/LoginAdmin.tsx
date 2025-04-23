@@ -57,7 +57,7 @@ export default function LoginAdmin() {
                         <div className="text-center flex flex-col justify-center items-center">
                           <Logo />
                           <h4 className="mb-6 mt-1 pb-1 text-2xl font-semibold max-w-[460px] text-blue-950">
-                            Trang quản lý SmartPhone Store
+                            Trang quản lý WinMobile
                           </h4>
                         </div>
 

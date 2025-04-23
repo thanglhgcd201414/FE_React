@@ -36,7 +36,7 @@ const RegisterPage: React.FC = () => {
     <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
       <div className="flex flex-col justify-center items-center mb-4">
         <Logo />
-        <span className="text-2xl font-bold text-gray-900">SmartPhone Store</span>
+        <span className="text-2xl font-bold text-gray-900">WinMobile</span>
       </div>
 
       <Form name="register" onFinish={onFinish} layout="vertical">

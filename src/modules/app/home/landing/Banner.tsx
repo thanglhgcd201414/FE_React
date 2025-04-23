@@ -19,10 +19,10 @@ export default function Banner() {
             className="space-y-6"
           >
             <h1 className="text-4xl font-bold leading-tight">
-              <span className="text-primary">Khám Phá Thế Giới Điện Thoại</span>
+              <span className="text-primary">WinMobile - Công nghệ đỉnh cao</span>
               <br />
-              <span className="text-black">
-                Ưu Đãi Lớn, Chất Lượng Tuyệt Vời
+              <span className="text-secondary">
+                Trải nghiệm tuyệt vời, giá cạnh tranh
               </span>
             </h1>
             <p className="text-lg text-gray-600">
@@ -33,7 +33,7 @@ export default function Banner() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate(DEFINE_USER_ROUTERS.listProduct)}
-              className="bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition-all duration-300 flex items-center gap-2"
+              className="bg-primary text-white px-8 py-4 rounded-full font-medium hover:bg-primary-dark transition-all duration-300 flex items-center gap-2"
             >
               <span>Mua ngay</span>
               <svg

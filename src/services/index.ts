@@ -1,7 +1,5 @@
-import BlogService from './blogService';
 import CartService from './cartService';
 import CategoryService from './categoryService';
-import ChatService from './chatService';
 import UploadService from './imagesService';
 import OrderService from './orderService';
 import PaymentService from './paymentService';
@@ -17,5 +15,3 @@ export const reviewService = new ReviewService();
 export const profileService = new ProfileService();
 export const orderService = new OrderService();
 export const paymentService = new PaymentService();
-export const chatService = new ChatService();
-export const blogService = new BlogService();

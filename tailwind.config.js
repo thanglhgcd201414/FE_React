@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#0052cc',
+        'primary-dark': '#003d99',
+        secondary: '#ff6b00',
+        'secondary-dark': '#cc5500',
+      },
+    },
     container: {
       // you can configure the container to be centered
       center: true,

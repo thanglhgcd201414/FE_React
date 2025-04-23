@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
   BlockOutlined,
-  FormOutlined,
   LoginOutlined,
   MobileOutlined,
   PieChartOutlined,
@@ -18,27 +17,22 @@ const Sidebar = () => {
   const menuItems = [
     {
       path: DEFINE_ROUTERS_ADMIN.dashboard,
-      label: 'Quản lý báo cáo',
+      label: 'Dashboard',
       icon: <PieChartOutlined />,
     },
     {
-      path: DEFINE_ROUTERS_ADMIN.blogsManager,
-      label: 'Quản lý bài viết',
-      icon: <FormOutlined />,
-    },
-    {
       path: DEFINE_ROUTERS_ADMIN.categoryManager,
-      label: 'Quản lý loại sản phẩm',
+      label: 'Categories',
       icon: <BlockOutlined />,
     },
     {
       path: DEFINE_ROUTERS_ADMIN.productManager,
-      label: 'Quản lý sản phẩm',
+      label: 'Products',
       icon: <MobileOutlined />,
     },
     {
       path: DEFINE_ROUTERS_ADMIN.orderManager,
-      label: 'Quản lý đơn hàng',
+      label: 'Orders',
       icon: <ShoppingOutlined />,
     },
   ];
@@ -52,7 +46,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col max-w-[320px] h-screen bg-blue-950 text-white">
       <div className="flex flex-col items-center justify-center h-24">
-        <h1 className="text-2xl font-bold">Trang quản lý</h1>
+        <h1 className="text-2xl font-bold">Admin Panel</h1>
         <Divider className="w-20 bg-white !mb-0" />
       </div>
       <div className="flex flex-col mt-4 px-5 space-y-3">
@@ -76,7 +70,7 @@ const Sidebar = () => {
           onClick={handleLogOut}
         >
           <span className="mr-2">{<LoginOutlined />}</span>
-          Đăng xuất
+          Logout
         </div>
       </div>
     </div>

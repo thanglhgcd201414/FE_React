@@ -6,7 +6,6 @@ const DEFINE_ROUTERS_ADMIN = {
   newProduct: '/admin/product-manager/new-product',
   categoryManager: '/admin/category-manager',
   orderManager: '/admin/order-manager',
-  blogsManager: '/admin/blogs-manager',
   loginAdmin: '/login-admin',
 };
 
@@ -22,8 +21,6 @@ const DEFINE_USER_ROUTERS = {
   checkoutPage: '/checkout-page',
   orderHistory: '/order-history',
   profile: '/profile',
-  blogs: '/blogs',
-  blogsDetail: '/blogs/:slug',
   paymentSuccess: '/payment-success/:id',
   paymentError: '/payment-error/:id',
 };

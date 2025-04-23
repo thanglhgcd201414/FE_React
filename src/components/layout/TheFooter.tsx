@@ -3,9 +3,6 @@ import {
   InstagramOutlined,
   TwitterOutlined,
   YoutubeOutlined,
-  EnvironmentOutlined,
-  PhoneOutlined,
-  MailOutlined,
 } from '@ant-design/icons';
 import { Button, Divider, Input, Typography } from 'antd';
 import Logo from '../icons/Logo';
@@ -17,7 +14,7 @@ export default function TheFooter() {
   return (
     <footer className="bg-gray-900 text-white mt-20 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 - Brand Info */}
           <div className="space-y-4">
             <NavLink
@@ -26,7 +23,7 @@ export default function TheFooter() {
             >
               <Logo />
               <span className="text-xl font-bold text-white">
-                SmartPhone Store
+                WinMobile
               </span>
             </NavLink>
             <Text className="text-gray-400">
@@ -131,54 +128,14 @@ export default function TheFooter() {
             </div>
           </div>
 
-          {/* Column 4 - Contact */}
-          <div>
-            <Title level={4} className="text-white mb-4">
-              <span className="text-white">Liên hệ</span>
-            </Title>
-            <div className="space-y-3">
-              <div className="flex items-start space-x-2">
-                <EnvironmentOutlined className="text-lg mt-1" />
-                <Text className="text-gray-400">
-                  Số 123, Đường ABC, Quận 1, TP.HCM
-                </Text>
-              </div>
-              <div className="flex items-center space-x-2">
-                <PhoneOutlined />
-                <Text className="text-gray-400">+84 123 456 789</Text>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MailOutlined />
-                <Text className="text-gray-400">
-                  support@smartphonestore.com
-                </Text>
-              </div>
-            </div>
 
-            <Divider className="bg-gray-700 my-4" />
-
-            <div className="space-y-3">
-              <Title level={5} className="text-white">
-                <span className="text-white">Nhận thông báo khuyến mãi</span>
-              </Title>
-              <Input
-                placeholder="Nhập email của bạn"
-                className="bg-white border-gray-700 text-white"
-                suffix={
-                  <Button type="primary" className="bg-blue-600">
-                    Đăng ký
-                  </Button>
-                }
-              />
-            </div>
-          </div>
         </div>
 
         <Divider className="bg-gray-700 my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-center space-y-2 md:space-y-0">
           <Text className="text-gray-400">
-            © {new Date().getFullYear()} SmartPhone Store. Bảo lưu mọi quyền
+            © {new Date().getFullYear()} WinMobile. Bảo lưu mọi quyền
           </Text>
           <div className="flex space-x-4">
             <a

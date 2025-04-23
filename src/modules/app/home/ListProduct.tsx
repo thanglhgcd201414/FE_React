@@ -78,14 +78,14 @@ export default function ListProduct() {
       <div className="w-1/4 space-y-6 pr-4">
         <div className="relative group">
           <Input
-            placeholder="Tìm kiếm sản phẩm..."
+            placeholder="Search products..."
             suffix={
               <SearchOutlined className="text-gray-400 group-hover:text-blue-500 transition-colors" />
             }
             allowClear
             onChange={(e) => handleSearch(e.target.value)}
-            className="rounded-xl shadow-sm hover:shadow-md transition-all 
-                border-gray-300 hover:border-blue-400 focus:border-blue-500 
+            className="rounded-xl shadow-sm hover:shadow-md transition-all
+                border-gray-300 hover:border-blue-400 focus:border-blue-500
                 py-2 px-4 text-base"
           />
         </div>
@@ -96,7 +96,7 @@ export default function ListProduct() {
             className="!mb-4 !text-gray-700 flex items-center gap-2"
           >
             <AppstoreOutlined className="text-blue-500" />
-            Danh mục sản phẩm
+            Product Categories
           </Typography.Title>
 
           <Checkbox.Group
@@ -130,15 +130,15 @@ export default function ListProduct() {
 
       <div className="w-3/4">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-lg font-semibold">Sắp xếp theo:</span>
+          <span className="text-lg font-semibold">Sort by:</span>
           <Select
             options={[
               {
-                label: 'Giá: Cao đến Thấp',
+                label: 'Price: High to Low',
                 value: 'DESC',
               },
               {
-                label: 'Giá: Thấp đến Cao',
+                label: 'Price: Low to High',
                 value: 'ASC',
               },
             ]}
@@ -170,7 +170,7 @@ export default function ListProduct() {
         )}
         <Visibility
           visibility={productsList.length}
-          suspenseComponent={<Empty description="Không có sản phẩm phù hợp" />}
+          suspenseComponent={<Empty description="No matching products" />}
         >
           <div className="mt-8 flex justify-center">
             <Pagination

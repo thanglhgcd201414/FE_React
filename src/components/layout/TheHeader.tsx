@@ -76,7 +76,6 @@ export default function TheHeader() {
   const navLinks = [
     { to: DEFINE_USER_ROUTERS.home, label: 'Trang chủ' },
     { to: DEFINE_USER_ROUTERS.listProduct, label: 'Sản phẩm' },
-    { to: DEFINE_USER_ROUTERS.blogs, label: 'Bài viết' },
     { to: DEFINE_USER_ROUTERS.aboutUs, label: 'Về chúng tôi' },
     { to: DEFINE_USER_ROUTERS.contactUs, label: 'Liên hệ' },
   ];
@@ -91,7 +90,7 @@ export default function TheHeader() {
           >
             <Logo />
             <span className="text-xl font-bold text-gray-900">
-              SmartPhone Store
+              WinMobile
             </span>
           </NavLink>
 

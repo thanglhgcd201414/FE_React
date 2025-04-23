@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import TheHeader from './TheHeader';
 import TheFooter from './TheFooter';
-import ChatBot from '../../modules/app/home/ChatBot';
 
 export default function TheLayout() {
   return (
@@ -9,7 +8,6 @@ export default function TheLayout() {
       <TheHeader />
       <Outlet />
       <TheFooter />
-      <ChatBot />
     </div>
   );
 }

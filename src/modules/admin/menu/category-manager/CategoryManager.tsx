@@ -47,15 +47,15 @@ export default function CategoryManager() {
 
   const handleDeleteCategory = async (item: ICategory) => {
     Modal.confirm({
-      title: "Bạn có muốn xóa danh mục này không?",
-      content: `Danh mục: ${item.name}`,
-      okText: "Đồng ý",
+      title: "Do you want to delete this category?",
+      content: `Category: ${item.name}`,
+      okText: "Confirm",
       okType: "danger",
-      cancelText: "Hủy",
+      cancelText: "Cancel",
       onOk: async () => {
         try {
           await categoryService.remove(item._id);
-          message.success("Xóa danh mục thành công");
+          message.success("Category deleted successfully");
           handleGetCategoriesList();
         } catch (error: any) {
           message.error(error.message);
@@ -81,7 +81,7 @@ export default function CategoryManager() {
     try {
       const values = await form.validateFields();
       if (!values.slug) {
-        values.slug = slugify(values.name, { 
+        values.slug = slugify(values.name, {
           lower: true,
           strict: true,
           locale: 'vi',
@@ -90,10 +90,10 @@ export default function CategoryManager() {
       }
       if (selectedCategory) {
         await categoryService.update(selectedCategory._id, values);
-        message.success("Cập nhật danh mục thành công");
+        message.success("Category updated successfully");
       } else {
         await categoryService.create(values);
-        message.success("Thêm mới danh mục thành công");
+        message.success("Category added successfully");
       }
       setIsModalVisible(false);
       handleGetCategoriesList();
@@ -108,33 +108,33 @@ export default function CategoryManager() {
 
   const columns: TableProps<ICategory>["columns"] = [
     {
-      title: "STT",
+      title: "No.",
       key: "index",
       render: (_, __, index) => (query.page! - 1) * query.limit! + index + 1,
     },
     {
-      title: "Tên danh mục",
+      title: "Category Name",
       dataIndex: "name",
       render: (text) => <span className="text-lg">{text}</span>,
     },
     {
-      title: "Đường dẫn liên kết",
+      title: "Slug",
       dataIndex: "slug",
       key: "slug",
       render: (text) => <span className="text-lg text-blue-600">{text}</span>,
     },
     {
-      title: "Mô tả",
+      title: "Description",
       dataIndex: "description",
       render: (text) => <span className="text-lg">{text || '--'}</span>,
     },
     {
-      title: "Ngày tạo",
+      title: "Created Date",
       dataIndex: "createdAt",
       render: (text) => <span>{formatDate(text)}</span>,
     },
     {
-      title: "Thao tác",
+      title: "Actions",
       align: "center",
       key: "actions",
       render: (_, record) => (
@@ -161,19 +161,19 @@ export default function CategoryManager() {
 
   return (
     <div className="flex flex-col space-y-5">
-      <h1 className="text-2xl font-bold">Quản lý danh mục</h1>
-      
+      <h1 className="text-2xl font-bold">Category Management</h1>
+
       <div className="flex justify-between">
         <BaseSearch
           value={query.search!}
           onHandleChange={(value) => setQuery({ ...query, search: value })}
           onSearch={handleGetCategoriesList}
         />
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           onClick={() => handleShowModal()}
         >
-          Thêm mới
+          Add New
         </Button>
       </div>
 
@@ -191,7 +191,7 @@ export default function CategoryManager() {
       />
 
       <Modal
-        title={selectedCategory ? "Cập nhật danh mục" : "Thêm mới danh mục"}
+        title={selectedCategory ? "Update Category" : "Add New Category"}
         visible={isModalVisible}
         onOk={handleSubmit}
         onCancel={() => setIsModalVisible(false)}
@@ -199,11 +199,11 @@ export default function CategoryManager() {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            label="Tên danh mục"
+            label="Category Name"
             name="name"
-            rules={[{ required: true, message: "Vui lòng nhập tên danh mục" }]}
+            rules={[{ required: true, message: "Please enter category name" }]}
           >
-            <Input 
+            <Input
             onChange={handleAutoGenerateSlug} />
           </Form.Item>
 
@@ -211,18 +211,18 @@ export default function CategoryManager() {
             label="Slug"
             name="slug"
             rules={[
-              { required: true, message: "Slug không được để trống" },
-              { 
+              { required: true, message: "Slug cannot be empty" },
+              {
                 pattern: /^[a-z0-9-]+$/,
-                message: "Slug chỉ chứa chữ thường, số và dấu gạch ngang" 
+                message: "Slug can only contain lowercase letters, numbers and hyphens"
               }
             ]}
           >
-            <Input placeholder="Tự động tạo khi nhập tên" />
+            <Input placeholder="Auto-generated from name" />
           </Form.Item>
 
           <Form.Item
-            label="Mô tả"
+            label="Description"
             name="description"
           >
             <Input.TextArea rows={4} />

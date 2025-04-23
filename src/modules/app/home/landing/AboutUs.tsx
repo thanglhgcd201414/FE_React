@@ -124,40 +124,6 @@ export default function AboutUs() {
           </Row>
         </motion.div>
 
-        {/* Team Section */}
-        <motion.div variants={fadeIn} className="mb-16">
-          <Title
-            level={3}
-            className="text-2xl font-semibold text-center mb-8 text-gray-800"
-          >
-            Đội Ngũ Tạo Nên Sự Khác Biệt
-          </Title>
-          <Row gutter={[24, 24]}>
-            {[1, 2, 3, 4].map((item) => (
-              <Col xs={24} sm={12} md={6} key={item}>
-                <motion.div whileHover={{ y: -5 }} className="group relative">
-                  <div className="overflow-hidden rounded-lg border">
-                    <img
-                      src={`https://source.unsplash.com/random/400x400?person=${item}`}
-                      alt="Team member"
-                      className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
-                      <div>
-                        <h4 className="text-lg font-medium text-white mb-1">
-                          Thành Viên {item}
-                        </h4>
-                        <p className="text-blue-100 text-sm">
-                          Chuyên gia công nghệ
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </Col>
-            ))}
-          </Row>
-        </motion.div>
 
         {/* Social Links */}
         <motion.div variants={fadeIn} className="text-center">

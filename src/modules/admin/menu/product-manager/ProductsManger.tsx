@@ -38,11 +38,11 @@ export default function ProductManager() {
 
   const handleDeleteProduct = async (_item: IProduct) => {
     Modal.confirm({
-      title: "Bạn có muốn xóa sản phẩm này không?",
-      content: `Sản phẩm: ${_item.name}`,
-      okText: "Đồng ý",
+      title: "Do you want to delete this product?",
+      content: `Product: ${_item.name}`,
+      okText: "Confirm",
       okType: "danger",
-      cancelText: "Hủy",
+      cancelText: "Cancel",
       style: {
         top: "50%",
         transform: "translateY(-50%)",
@@ -68,20 +68,20 @@ export default function ProductManager() {
 
   const columns: TableProps<IProduct>["columns"] = [
     {
-      title: "Số thứ tự",
+      title: "No.",
       key: "index",
       render: (_: any, __: any, index: number) =>
         (query.page! - 1) * query.limit! + index + 1,
     },
     {
-      title: "Tên sản phẩm",
+      title: "Product Name",
       dataIndex: "name",
       align: "justify",
       key: "name",
       render: (text) => <span className="text-lg font-medium">{text}</span>,
     },
     {
-      title: "Danh mục",
+      title: "Categories",
       dataIndex: "categories",
       align: "left",
       key: "categories",
@@ -92,25 +92,25 @@ export default function ProductManager() {
           ))}
         </div>
       ),
-    },    
+    },
     {
-      title: "Ảnh sản phẩm",
+      title: "Product Image",
       dataIndex: "images",
       key: "images",
       render: (listImage) => {
         const imageSrc = listImage && listImage.length > 0 ? buildImageUrl(listImage[0]) : 'path/to/default-image.jpg';
-    
+
         return (
-          <img 
-            className="h-[80px] w-auto object-cover" 
-            src={imageSrc} 
-            alt="thumbnail" 
+          <img
+            className="h-[80px] w-auto object-cover"
+            src={imageSrc}
+            alt="thumbnail"
           />
         );
       },
     },
     {
-      title: "Ngày tạo",
+      title: "Created Date",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text) => (
@@ -118,7 +118,7 @@ export default function ProductManager() {
       ),
     },
     {
-      title: "Xóa sản phẩm",
+      title: "Delete",
       key: "deleteProduct",
       align: "center",
       dataIndex: "deleteProduct",
@@ -145,7 +145,7 @@ export default function ProductManager() {
   return (
     <>
       <div className="flex flex-col justify-start items-start space-y-5 w-full">
-        <h1 className="font-bold text-2xl">Quản lý danh sách sản phẩm</h1>
+        <h1 className="font-bold text-2xl">Product Management</h1>
         <div className="flex flex-row justify-between items-center w-full">
           <BaseSearch
             value={query.search!}
@@ -161,7 +161,7 @@ export default function ProductManager() {
               navigate(DEFINE_ROUTERS_ADMIN.newProduct);
             }}
           >
-            Thêm mới sản phẩm
+            Add New Product
           </Button>
         </div>
         {loading ? (

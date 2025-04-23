@@ -6,7 +6,6 @@ import { IProduct } from '../../../types/product.types';
 import DisplayProduct from './_components/DisplayProduct';
 import Banner from './landing/Banner';
 import Visibility from '../../../components/base/visibility';
-import ChatBot from './ChatBot';
 
 export default function ListProduct() {
   const [query, setQuery] = React.useState({
