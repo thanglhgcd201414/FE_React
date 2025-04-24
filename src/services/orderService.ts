@@ -7,6 +7,11 @@ import onRemoveParams from "../utils/on-remove-params";
 class OrderService {
   private _prefixURL = "/order";
 
+  /**
+   * Tạo đơn hàng mới
+   * @param data Dữ liệu đơn hàng (items, paymentMethod, paymentStatus)
+   * @returns Thông tin đơn hàng đã tạo
+   */
   public async create(data: Record<string, any>): Promise<IBaseResponse<IOrder>> {
     try {
       const rs = await axiosRequest.post(this._prefixURL, data);

@@ -6,7 +6,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ICategory } from "../../../../types/category";
 import { categoryService } from "../../../../services";
 import { formatDate } from "../../../../utils/format-date";
-import slugify from "slugify";
 
 export default function CategoryManager() {
   const [form] = Form.useForm();
@@ -34,16 +33,7 @@ export default function CategoryManager() {
     }
   };
 
-  const handleAutoGenerateSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-    const generatedSlug = slugify(name, {
-      lower: true,
-      strict: true,
-      locale: 'vi',
-      trim: true
-    });
-    form.setFieldsValue({ slug: generatedSlug });
-  };
+
 
   const handleDeleteCategory = async (item: ICategory) => {
     Modal.confirm({
@@ -80,14 +70,6 @@ export default function CategoryManager() {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      if (!values.slug) {
-        values.slug = slugify(values.name, {
-          lower: true,
-          strict: true,
-          locale: 'vi',
-          trim: true
-        });
-      }
       if (selectedCategory) {
         await categoryService.update(selectedCategory._id, values);
         message.success("Category updated successfully");
@@ -116,12 +98,6 @@ export default function CategoryManager() {
       title: "Category Name",
       dataIndex: "name",
       render: (text) => <span className="text-lg">{text}</span>,
-    },
-    {
-      title: "Slug",
-      dataIndex: "slug",
-      key: "slug",
-      render: (text) => <span className="text-lg text-blue-600">{text}</span>,
     },
     {
       title: "Description",
@@ -192,7 +168,7 @@ export default function CategoryManager() {
 
       <Modal
         title={selectedCategory ? "Update Category" : "Add New Category"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleSubmit}
         onCancel={() => setIsModalVisible(false)}
         destroyOnClose
@@ -203,22 +179,7 @@ export default function CategoryManager() {
             name="name"
             rules={[{ required: true, message: "Please enter category name" }]}
           >
-            <Input
-            onChange={handleAutoGenerateSlug} />
-          </Form.Item>
-
-          <Form.Item
-            label="Slug"
-            name="slug"
-            rules={[
-              { required: true, message: "Slug cannot be empty" },
-              {
-                pattern: /^[a-z0-9-]+$/,
-                message: "Slug can only contain lowercase letters, numbers and hyphens"
-              }
-            ]}
-          >
-            <Input placeholder="Auto-generated from name" />
+            <Input />
           </Form.Item>
 
           <Form.Item

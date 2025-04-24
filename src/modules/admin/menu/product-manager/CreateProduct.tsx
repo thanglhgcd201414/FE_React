@@ -3,7 +3,7 @@ import { Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import GeneralLoading from "../../../../components/base/GeneralLoading";
-import CreateOrEditEvent from "./common/CreateOrEditProduct";
+import CreateOrEditProduct from "./common/CreateOrEditProduct";
 import { productService } from "../../../../services";
 
 export default function CreateProduct() {
@@ -33,7 +33,7 @@ export default function CreateProduct() {
       >
         Trở lại
       </Button>
-      <CreateOrEditEvent handleSubmit={handleSubmit} />
+      <CreateOrEditProduct handleSubmit={handleSubmit} />
       <GeneralLoading isLoading={loading} />
     </>
   );

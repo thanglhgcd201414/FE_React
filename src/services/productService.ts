@@ -53,41 +53,7 @@ class ProductService {
     }
   }
 
-  public async addToMyFavoriteProduct(id: string): Promise<IBaseResponse<any>> {
-    try {
-      const rs = await axiosRequest.put(`${this._prefixURL}/favorite-product/${id}`);
-      return Promise.resolve(rs.data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
 
-  public async removeFromMyFavoriteProduct(id: string): Promise<IBaseResponse<any>> {
-    try {
-      const rs = await axiosRequest.delete(`${this._prefixURL}/favorite-product/${id}`);
-      return Promise.resolve(rs.data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  public async getMyFavoriteProduct(): Promise<IBaseResponse<IProduct[]>> {
-    try {
-      const rs = await axiosRequest.get(`${this._prefixURL}/favorite-product`);
-      return Promise.resolve(rs.data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  public async checkFavorite(id: string): Promise<IBaseResponse<any>> {
-    try {
-      const rs = await axiosRequest.get(`${this._prefixURL}/favorite-product/${id}`);
-      return Promise.resolve(rs.data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
 }
 
 export default ProductService;

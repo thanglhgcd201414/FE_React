@@ -30,19 +30,17 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<EPaymentMethod>(
     EPaymentMethod.CAST,
   );
-  const [trackingNumber, setTrackingNumber] = useState<string>();
+
   const [isConfirmedTerm, setIsConfirmedTerm] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: '',
-    phoneNumber: '',
     address: '',
     city: '',
     district: '',
     ward: '',
     street: '',
-    note: '',
   });
 
   const loadCart = async () => {
@@ -64,20 +62,7 @@ const CheckoutPage = () => {
       setFormData((prev) => ({
         ...prev,
         name: userData.name || '',
-        phoneNumber: userData.phoneNumber || '',
       }));
-
-      if (userData.shippingAddress?.length) {
-        const firstAddress = userData.shippingAddress[0];
-        setFormData((prev) => ({
-          ...prev,
-          address: `${firstAddress.street}, ${firstAddress.district}, ${firstAddress.ward} ,${firstAddress.city}`,
-          city: firstAddress.city,
-          district: firstAddress.district,
-          street: firstAddress.street,
-          ward: firstAddress.ward,
-        }));
-      }
     }
   }, [userData]);
 
@@ -91,8 +76,7 @@ const CheckoutPage = () => {
     if (!cart) return 0;
     return (
       cart.items.reduce((acc, item) => {
-        const variant = item.productId.variants.find((v) => v.sku === item.sku);
-        return acc + (variant?.price || 0) * item.quantity;
+        return acc + (item.productId.price || 0) * item.quantity;
       }, 0) + 30000
     );
   };
@@ -108,10 +92,7 @@ const CheckoutPage = () => {
       message.error('Vui lòng nhập họ tên');
       return false;
     }
-    if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
-      message.error('Số điện thoại không hợp lệ');
-      return false;
-    }
+
     if (!formData.city || !formData.district || !formData.street) {
       message.error('Vui lòng điền đầy đủ địa chỉ');
       return false;
@@ -140,13 +121,11 @@ const CheckoutPage = () => {
           street: formData.street,
           ward: formData.ward,
         },
-        phoneNumber: formData.phoneNumber,
         paymentMethod,
-        note: formData.note,
       };
 
       const rs = await orderService.create(orderData);
-      setTrackingNumber(rs.data.trackingNumber);
+
       if(rs.data.paymentMethod === EPaymentMethod.BANK_TRANSFER) {
         handlePayment(rs.data._id);
       }
@@ -194,7 +173,7 @@ const CheckoutPage = () => {
               />
             )}
 
-            {currentStep === 2 && <StepThree trackingNumber={trackingNumber} />}
+            {currentStep === 2 && <StepThree />}
           </AnimatePresence>
 
           <div className="flex justify-between mt-6">

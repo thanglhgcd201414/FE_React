@@ -1,10 +1,3 @@
-export interface IShippingAddress {
-  city: string;
-  district: string;
-  street: string;
-  ward: string;
-}
-
 export interface IUser {
   _id: string;
   email: string;
@@ -12,8 +5,6 @@ export interface IUser {
   avatar?: string;
   role: IRole;
   phoneNumber: string;
-  shippingAddress: IShippingAddress[];
-  favoriteProducts?: string[];
   __v: number;
   createdAt: string;
   updatedAt: string;

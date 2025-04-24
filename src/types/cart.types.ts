@@ -2,7 +2,6 @@ import { IProduct } from "./product.types";
 
 export interface IItemCart {
   productId: IProduct;
-  sku: string;
   quantity: number
 }
 
@@ -18,7 +17,6 @@ export interface ICart {
 
 interface Item {
   productId: IProduct;
-  sku: string;
   quantity: number;
   _id: string;
 }

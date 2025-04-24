@@ -4,6 +4,12 @@ import { IBaseResponse,  } from "../types/response.types";
 class CartService {
   private _prefixURL = "/cart";
 
+  /**
+   * Thêm sản phẩm vào giỏ hàng
+   * @param id ID của giỏ hàng
+   * @param data Dữ liệu sản phẩm (productId, quantity)
+   * @returns Thông tin giỏ hàng đã cập nhật
+   */
   public async addItemToCart(id: string, data: Record<string, any>): Promise<IBaseResponse<ICart>> {
     try {
       const rs = await axiosRequest.post(`${this._prefixURL}/${id}`, data);

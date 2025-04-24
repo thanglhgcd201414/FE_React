@@ -1,16 +1,19 @@
 import { Table } from 'antd';
-import { IVariants } from '../../../../types/product.types';
 import Column from 'antd/es/table/Column';
 
 interface IProps {
-  variant?: IVariants | null;
+  specifications?: Array<{key: string, value: string}> | null;
 }
 
-export default function ProductAttributes({ variant }: IProps) {
+export default function ProductAttributes({ specifications }: IProps) {
+  if (!specifications || specifications.length === 0) {
+    return <div className="text-gray-500">Không có thông số kỹ thuật</div>;
+  }
+
   return (
     <div className="overflow-x-auto">
       <Table
-        dataSource={variant?.specifications}
+        dataSource={specifications}
         pagination={false}
         rowKey={(record) => record.key}
       >

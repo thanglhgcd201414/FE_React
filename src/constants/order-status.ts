@@ -15,9 +15,4 @@ enum EPaymentMethod {
   BANK_TRANSFER = 'BANK_TRANSFER',
 }
 
-enum EOrderReviewed {
-  NOT_REVIEWED = 'NOT_REVIEWED',
-  REVIEWED = 'REVIEWED',
-}
-
-export { EOrderStatus, EPaymentStatus, EPaymentMethod, EOrderReviewed };
+export { EOrderStatus, EPaymentStatus, EPaymentMethod };

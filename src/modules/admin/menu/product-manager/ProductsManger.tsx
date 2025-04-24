@@ -110,6 +110,19 @@ export default function ProductManager() {
       },
     },
     {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price) => (
+        <span className="text-lg font-medium text-red-600">
+          {new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          }).format(price)}
+        </span>
+      ),
+    },
+    {
       title: "Created Date",
       dataIndex: "createdAt",
       key: "createdAt",

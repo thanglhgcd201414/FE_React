@@ -18,10 +18,8 @@ interface IProps {
 export default function DisplayProduct({ product }: IProps) {
   const navigate = useNavigate();
   const { userData } = useAppSelector((state: IRootState) => state.user);
-  const firstVariant = product.variants[0];
-  const hasDiscount = firstVariant.originalPrice > firstVariant.price;
-
-  const isFavorite = userData?.favoriteProducts?.includes(product._id);
+  // Không còn sử dụng variants và favoriteProducts
+  const isFavorite = false; // Đã loại bỏ tính năng yêu thích
 
   return (
     <Card
@@ -66,32 +64,17 @@ export default function DisplayProduct({ product }: IProps) {
                 {product.categories?.[0]?.name}
               </p>
               <div className="flex items-center gap-2">
-                {product.ratingAverage && (
-                  <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
-                    <span className="text-yellow-500">★</span>
-                    <span className="text-sm font-medium">
-                      {product.ratingAverage.toFixed(1)}
-                    </span>
-                  </div>
-                )}
+                {/* Đã loại bỏ đánh giá */}
               </div>
             </div>
 
             <div className="space-y-1">
-              {hasDiscount && (
-                <div className="text-sm text-gray-400 line-through">
-                  {new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND',
-                  }).format(firstVariant.originalPrice)}
-                </div>
-              )}
               <div className="flex justify-between items-center">
                 <span className="text-2xl font-bold text-primary">
                   {new Intl.NumberFormat('vi-VN', {
                     style: 'currency',
                     currency: 'VND',
-                  }).format(firstVariant.price)}
+                  }).format(product.price)}
                 </span>
                 <button
                   className="px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors group-hover:bg-primary"

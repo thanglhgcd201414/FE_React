@@ -20,7 +20,6 @@ import { motion } from 'framer-motion';
 import { IOrder } from '../../../../types/order.types';
 import { formatCurrency } from '../../../../utils/format-money';
 import {
-  EOrderReviewed,
   EOrderStatus,
   EPaymentMethod,
   EPaymentStatus,
@@ -30,7 +29,6 @@ import DisplayItems from './DisplayItems';
 import AddressInfo from './AddressInfo';
 import { orderService, paymentService } from '../../../../services';
 import Visibility from '../../../../components/base/visibility';
-import ReviewModal from './ReviewModal';
 
 const { TabPane } = Tabs;
 const { Title, Text } = Typography;
@@ -256,14 +254,14 @@ const OrderHistoryPage = ({
                               )}
                             </div>
 
-                            {order.orderStatus === EOrderStatus.DELIVERED &&
+                            {/* {order.orderStatus === EOrderStatus.DELIVERED &&
                               order.reviewed ===
                                 EOrderReviewed.NOT_REVIEWED && (
                                 <ReviewModal
                                 order={order}
                                 onFetch={onFetch}
                                 />
-                              )}
+                              )} */}
                           </div>
                         </div>
                       </div>
