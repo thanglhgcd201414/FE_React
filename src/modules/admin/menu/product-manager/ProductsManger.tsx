@@ -114,9 +114,9 @@ export default function ProductManager() {
       key: "price",
       render: (price) => (
         <span className="text-lg font-medium text-red-600">
-          {new Intl.NumberFormat('vi-VN', {
+          {new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'VND',
+            currency: 'USD',
           }).format(price)}
         </span>
       ),

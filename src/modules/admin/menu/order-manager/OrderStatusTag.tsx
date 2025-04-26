@@ -3,11 +3,19 @@ import {
   ClockCircleOutlined,
   TruckOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
 } from '@ant-design/icons';
 import { EOrderStatus } from '../../../../constants/order-status';
 
-const statusConfig = {
+// Định nghĩa kiểu cho cấu hình trạng thái
+type StatusConfigType = {
+  [key: string]: {
+    color: string;
+    icon: React.ReactNode;
+    label: string;
+  };
+};
+
+const statusConfig: StatusConfigType = {
   [EOrderStatus.PROCESSING]: {
     color: 'blue',
     icon: <ClockCircleOutlined />,
@@ -23,15 +31,17 @@ const statusConfig = {
     icon: <CheckCircleOutlined />,
     label: 'Đã giao hàng',
   },
-  [EOrderStatus.CANCELLED]: {
-    color: 'red',
-    icon: <CloseCircleOutlined />,
-    label: 'Đã hủy',
-  },
+  // Đã loại bỏ trạng thái CANCELLED
 };
 
-const OrderStatusTag = ({ status }: { status: EOrderStatus }) => {
-  const config = statusConfig[status];
+const OrderStatusTag = ({ status }: { status: string }) => {
+  // Sử dụng cấu hình mặc định nếu không tìm thấy trạng thái
+  const config = statusConfig[status] || {
+    color: 'default',
+    icon: <ClockCircleOutlined />,
+    label: status || 'Không xác định',
+  };
+
   return (
     <Tag
       color={config.color}

@@ -29,14 +29,14 @@ const Cart = () => {
 
   const updateQuantity = async (itemId: string, newQuantity: number) => {
     if (!cart) return;
-    
+
     setUpdating(true);
     try {
-      const updatedItems = cart.items.map(item => 
+      const updatedItems = cart.items.map(item =>
         item._id === itemId ? { ...item, quantity: newQuantity } : item
       );
-      
-      const { data } = await cartService.update(cart._id, { 
+
+      const { data } = await cartService.update(cart._id, {
         items: updatedItems.map(item => ({
           productId: item.productId._id,
           quantity: item.quantity
@@ -55,7 +55,7 @@ const Cart = () => {
     setUpdating(true);
     try {
       const filteredItems = cart.items.filter(item => item._id !== itemId);
-      const { data } = await cartService.update(cart._id, { 
+      const { data } = await cartService.update(cart._id, {
         items: filteredItems.map(item => ({
           productId: item.productId._id,
           quantity: item.quantity
@@ -90,7 +90,7 @@ const Cart = () => {
 
   // Tính tổng thanh toán (bao gồm phí ship)
   const calculateTotal = () => {
-    return calculateSubtotal() + 30000; // 30,000 VND phí ship
+    return calculateSubtotal() + 30; // $30 phí ship
   };
 
   return (
@@ -123,8 +123,8 @@ const Cart = () => {
                     className="group flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100"
                   >
                     <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
-                      <img 
-                        src={buildImageUrl(item.productId.images[0])} 
+                      <img
+                        src={buildImageUrl(item.productId.images[0])}
                         className="object-contain w-full h-full"
                         alt={item.productId.name}
                       />
@@ -153,7 +153,7 @@ const Cart = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => {
-                          removeItem(item._id); 
+                          removeItem(item._id);
                         }}
                         className="text-red-500 hover:text-red-600 transition-colors"
                       >
@@ -164,9 +164,9 @@ const Cart = () => {
                     <div className="w-32 text-right">
                       <div className="flex flex-col">
                         <span className="font-medium text-gray-800">
-                          {new Intl.NumberFormat('vi-VN', {
+                          {new Intl.NumberFormat('en-US', {
                             style: 'currency',
-                            currency: 'VND'
+                            currency: 'USD'
                           }).format(price * item.quantity)}
                         </span>
                       </div>
@@ -176,7 +176,7 @@ const Cart = () => {
               })}
             </div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ type: 'spring', stiffness: 120 }}
@@ -184,7 +184,7 @@ const Cart = () => {
             >
               <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-gray-800">Tổng kết đơn hàng</h3>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Sản phẩm</span>
@@ -196,9 +196,9 @@ const Cart = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Tạm tính</span>
                     <span className="text-green-600 font-bold">
-                      {new Intl.NumberFormat('vi-VN', {
+                      {new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'VND'
+                        currency: 'USD'
                       }).format(calculateSubtotal())}
                     </span>
                   </div>
@@ -206,13 +206,12 @@ const Cart = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">
                       Phí ship
-                      <span className="text-xs text-gray-400 ml-1">(Nội thành Hà Nội)</span>
                     </span>
                     <span className="text-gray-800">
-                      {new Intl.NumberFormat('vi-VN', {
+                      {new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'VND'
-                      }).format(30000)}
+                        currency: 'USD'
+                      }).format(30)}
                     </span>
                   </div>
 
@@ -221,9 +220,9 @@ const Cart = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 font-semibold">Tổng thanh toán</span>
                     <span className="text-xl font-bold text-gray-800">
-                      {new Intl.NumberFormat('vi-VN', {
+                      {new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'VND'
+                        currency: 'USD'
                       }).format(calculateTotal())}
                     </span>
                   </div>

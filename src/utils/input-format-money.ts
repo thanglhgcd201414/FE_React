@@ -3,7 +3,7 @@ const formatter = (value: any) => {
 };
 
 const parser = (value: any) => {
-  return value.replace(/₫\s?|(,*)/g, "");
+  return value.replace(/\$\s?|(,*)/g, "");
 };
 
 export {

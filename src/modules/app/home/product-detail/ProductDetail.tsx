@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Button,
   Tabs,
@@ -7,21 +7,11 @@ import {
   Skeleton,
   Tag,
   message,
-  Dropdown,
-  MenuProps,
 } from 'antd';
-import {
-  ShoppingCartOutlined,
-  ShareAltOutlined,
-  ClockCircleOutlined,
-  LinkOutlined,
-  MailOutlined,
-  TwitterOutlined,
-  FacebookOutlined,
-} from '@ant-design/icons';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Thumbs } from 'swiper/modules';
+import { Navigation, Thumbs } from 'swiper/modules';
 import { IProduct } from '../../../../types/product.types';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -31,7 +21,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../../../lib/store';
 import { addCartInfo } from '../../../../lib/reducer/cartSlice';
 import buildImageUrl from '../../../../utils/build-image-url';
-import { DEFINE_USER_ROUTERS } from '../../../../constants/route-mapper';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -41,7 +30,6 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const { cartInfo } = useSelector((state: IRootState) => state.cart);
   const { userData } = useSelector((state: IRootState) => state.user);
-  const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
 
 
 
@@ -50,9 +38,8 @@ export default function ProductDetail() {
       try {
         if (id) {
           const response = await productService.findOne(id);
-          const {productDetail: productData, relatedProducts} = response.data;
+          const {productDetail: productData} = response.data;
           setProduct(productData);
-          setRelatedProducts(relatedProducts);
         }
       } catch (error) {
         message.error('Không thể tải thông tin sản phẩm');
@@ -110,47 +97,6 @@ export default function ProductDetail() {
     }
   ];
 
-  const itemsShare: MenuProps['items'] = [
-    {
-      key: 'facebook',
-      label: 'Facebook',
-      icon: <FacebookOutlined />,
-      onClick: () => {
-        window.open(
-          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-          '_blank'
-        );
-      }
-    },
-    {
-      key: 'twitter',
-      label: 'Twitter',
-      icon: <TwitterOutlined />,
-      onClick: () => {
-        window.open(
-          `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${product?.name} - ${window.location.href}`)}`,
-          '_blank'
-        );
-      }
-    },
-    {
-      key: 'email',
-      label: 'Email',
-      icon: <MailOutlined />,
-      onClick: () => {
-        window.location.href = `mailto:?subject=${encodeURIComponent(product?.name || '')}&body=${encodeURIComponent(window.location.href)}`;
-      }
-    },
-    {
-      key: 'copy',
-      label: 'Sao chép link',
-      icon: <LinkOutlined />,
-      onClick: () => {
-        navigator.clipboard.writeText(window.location.href);
-        message.success('Đã sao chép link');
-      }
-    }
-  ];
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -171,78 +117,7 @@ export default function ProductDetail() {
 
 
 
-    const renderRelatedProducts = () => {
-      if (relatedProducts.length === 0) return null;
-
-      return (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mt-16 px-4"
-        >
-          <h2 className="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
-
-          <Swiper
-            slidesPerView={1}
-            spaceBetween={10}
-            loop={true}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 3,
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: 4,
-                spaceBetween: 25,
-              },
-              1024: {
-                slidesPerView: 5,
-                spaceBetween: 30,
-              },
-            }}
-            modules={[Navigation, Autoplay]}
-            className="related-products-swiper"
-          >
-            {relatedProducts.map((product) => {
-              return (
-                <SwiperSlide key={product._id}>
-                  <motion.div
-                    whileHover={{ y: -5 }}
-                    className="border rounded-lg p-4 hover:shadow-lg transition-all mx-2 h-full"
-                  >
-                    <Link to={DEFINE_USER_ROUTERS.productDetail.replace(':id', product._id)}>
-                      <div className="relative">
-                        <img
-                          src={buildImageUrl(product.images[0])}
-                          alt={product.name}
-                          className="w-full h-16 object-contain mb-4"
-                        />
-                      </div>
-                      <h3 className="font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                      <div className="space-y-2">
-                        <div className="flex flex-col">
-                          <span className="text-red-600 font-bold">
-                            {new Intl.NumberFormat('vi-VN', {
-                              style: 'currency',
-                              currency: 'VND',
-                            }).format(product.price)}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        </motion.div>
-      );
-    };
+    // Đã loại bỏ phần hiển thị sản phẩm liên quan
 
   return (
     <motion.div
@@ -301,18 +176,14 @@ export default function ProductDetail() {
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <span className="text-2xl font-bold text-red-600">
-                {new Intl.NumberFormat('vi-VN', {
+                {new Intl.NumberFormat('en-US', {
                   style: 'currency',
-                  currency: 'VND',
+                  currency: 'USD',
                 }).format(product.price)}
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Tag icon={<ClockCircleOutlined />} color="green">
-                Giao hàng trong 2-4 ngày
-              </Tag>
-            </div>
+            {/* Đã loại bỏ thông tin giao hàng */}
 
             <div className="flex gap-4 mt-6">
               <Button
@@ -324,24 +195,7 @@ export default function ProductDetail() {
               >
                 Thêm vào giỏ hàng
               </Button>
-              <Dropdown
-                menu={{ items: itemsShare }}
-                trigger={['click']}
-                placement="topCenter"
-                disabled={!product}
-              >
-                <Button
-                  size="large"
-                  icon={<ShareAltOutlined />}
-                  className="flex-1"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                >
-                  Chia sẻ
-                </Button>
-              </Dropdown>
+
             </div>
           </div>
 
@@ -372,7 +226,7 @@ export default function ProductDetail() {
         />
       </motion.div>
 
-      {renderRelatedProducts()}
+      {/* Đã loại bỏ phần hiển thị sản phẩm liên quan */}
     </motion.div>
   );
 }

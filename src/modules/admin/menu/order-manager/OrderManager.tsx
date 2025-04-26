@@ -23,10 +23,16 @@ export default function OrderManager() {
     try {
       setLoading(true);
       const rs = await orderService.findAll(query);
-      setOrdersList(rs.data.content);
+
+      // Lọc bỏ các đơn hàng có trạng thái CANCELLED
+      const filteredOrders = rs.data.content.filter(
+        (order) => (order.orderStatus as string) !== 'CANCELLED'
+      );
+
+      setOrdersList(filteredOrders);
       setQuery({
         ...query,
-        total: rs.data.metaData.totalItem,
+        total: filteredOrders.length,
       });
     } finally {
       setLoading(false);

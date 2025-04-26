@@ -71,9 +71,9 @@ export default function DisplayProduct({ product }: IProps) {
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="text-2xl font-bold text-primary">
-                  {new Intl.NumberFormat('vi-VN', {
+                  {new Intl.NumberFormat('en-US', {
                     style: 'currency',
-                    currency: 'VND',
+                    currency: 'USD',
                   }).format(product.price)}
                 </span>
                 <button

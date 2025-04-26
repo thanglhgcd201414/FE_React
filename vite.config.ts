@@ -17,4 +17,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     }
   },
+  optimizeDeps: {
+    include: ['@paypal/react-paypal-js'],
+    force: true
+  },
 })

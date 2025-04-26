@@ -1,9 +1,7 @@
 import {
   ClockCircleOutlined,
-  TruckOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
-  WalletOutlined,
+  TruckOutlined,
 } from '@ant-design/icons';
 import {
   Tabs,
@@ -12,33 +10,24 @@ import {
   Divider,
   List,
   Typography,
-  Button,
-  message,
-  Modal,
 } from 'antd';
 import { motion } from 'framer-motion';
 import { IOrder } from '../../../../types/order.types';
 import { formatCurrency } from '../../../../utils/format-money';
-import {
-  EOrderStatus,
-  EPaymentMethod,
-  EPaymentStatus,
-} from '../../../../constants/order-status';
+import { EOrderStatus } from '../../../../constants/order-status';
 import OrderInfo from './OrderInfo';
 import DisplayItems from './DisplayItems';
 import AddressInfo from './AddressInfo';
-import { orderService, paymentService } from '../../../../services';
-import Visibility from '../../../../components/base/visibility';
+// Không cần import orderService vì đã loại bỏ chức năng hủy đơn hàng
 
 const { TabPane } = Tabs;
 const { Title, Text } = Typography;
 
 const OrderHistoryPage = ({
   orders,
-  onFetch,
 }: {
   orders: IOrder[],
-  onFetch: () => void,
+  onFetch?: () => void, // Đánh dấu là optional vì không sử dụng
 }) => {
   const statusConfig = {
     PROCESSING: {
@@ -56,42 +45,12 @@ const OrderHistoryPage = ({
       icon: <CheckCircleOutlined />,
       label: 'Đã giao hàng',
     },
-    CANCELLED: { color: 'red', icon: <CloseCircleOutlined />, label: 'Đã hủy' },
+    // Đã loại bỏ trạng thái CANCELLED
   };
 
-  const handlePayment = async (orderId: string) => {
-    try {
-      const rs = await paymentService.createPayment({
-        orderId,
-      });
-      window.location.replace(rs.data);
-    } catch (error) {
-      message.error('Có lỗi xảy ra trong quá trình thanh toán');
-    }
-  };
+  // Không cần hàm handlePayment vì chỉ sử dụng PayPal
 
-  const handleCancelOrder = async (orderId: string) => {
-    Modal.confirm({
-      title: 'Xác nhận hủy đơn hàng',
-      content: 'Bạn có chắc chắn muốn hủy đơn hàng này?',
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Hủy',
-      style: {
-        top: '50%',
-        transform: 'translateY(-50%)',
-      },
-      onOk: async () => {
-        try {
-          const rs = await orderService.cancelOrder(orderId);
-          message.success(rs.message);
-          onFetch();
-        } catch (error) {
-          message.error('Có lỗi xảy ra trong quá trình thanh toán');
-        }
-      },
-    });
-  };
+  // Đã loại bỏ hàm handleCancelOrder vì đơn hàng PayPal không thể hủy
 
   return (
     <div className="max-w-6xl mx-auto p-4 min-w-[1180px]">
@@ -100,6 +59,7 @@ const OrderHistoryPage = ({
       </Title>
 
       <Tabs defaultActiveKey={EOrderStatus.PROCESSING} className="w-full">
+        {/* Chỉ hiển thị các tab cho các trạng thái được hỗ trợ */}
         {Object.entries(statusConfig).map(([key, { color, icon, label }]) => (
           <TabPane
             key={key}
@@ -116,7 +76,10 @@ const OrderHistoryPage = ({
               transition={{ duration: 0.3 }}
             >
               <List
-                dataSource={orders.filter((order) => order.orderStatus === key)}
+                dataSource={orders.filter((order) =>
+                  // Lọc bỏ các đơn hàng có trạng thái CANCELLED và chỉ hiển thị đơn hàng có trạng thái hiện tại
+                  order.orderStatus === key && (order.orderStatus as string) !== 'CANCELLED'
+                )}
                 renderItem={(order) => {
                   return (
                     <Card key={order._id} className="mb-4 shadow-md">
@@ -164,94 +127,32 @@ const OrderHistoryPage = ({
                                   transition={{ duration: 0.3 }}
                                 >
                                   <Card className="shadow-sm">
-                                    {order.paymentMethod ===
-                                    EPaymentMethod.CAST ? (
-                                      <div className="flex items-center gap-4 p-2">
-                                        <TruckOutlined className="text-2xl text-green-600" />
-                                        <div>
-                                          <h4 className="font-semibold text-green-600">
-                                            Thanh toán khi nhận hàng (COD)
-                                          </h4>
-                                          <p className="text-gray-500">
-                                            Phí ship nội thành: 30,000 đ
-                                          </p>
-                                          <p className="text-gray-500">
-                                            Phí xử lý: 0đ
-                                          </p>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div className="flex flex-col items-start">
-                                        <div className="flex flex-row items-center gap-4 p-2">
-                                          <WalletOutlined className="text-2xl text-orange-600" />
-                                          <div>
-                                            <h4 className="font-semibold text-orange-600">
-                                              Ví điện tử VNPay
-                                              <Tag
-                                                color={
-                                                  order.paymentStatus ===
-                                                  EPaymentStatus.PAID
-                                                    ? 'green'
-                                                    : 'red'
-                                                }
-                                                className="ml-2"
-                                              >
-                                                {order.paymentStatus ===
-                                                EPaymentStatus.PAID
-                                                  ? 'Đã thanh toán'
-                                                  : 'Chưa thanh toán'}
-                                              </Tag>
-                                            </h4>
-
-                                            <p className="text-gray-500">
-                                              {order.paymentStatus ===
-                                              EPaymentStatus.PAID
-                                                ? `Đã thanh toán lúc ${new Date(order.updatedAt).toLocaleString()}`
-                                                : 'Vui lòng hoàn tất thanh toán'}
-                                            </p>
-                                          </div>
-                                        </div>
-                                        <Visibility
-                                          visibility={
-                                            order.paymentStatus ===
-                                              EPaymentStatus.UNPAID &&
-                                            order.orderStatus !==
-                                              EOrderStatus.CANCELLED
-                                          }
-                                        >
-                                          <Button
-                                            danger
-                                            block
-                                            type="primary"
-                                            className="mt-4 w-full"
-                                            onClick={() => {
-                                              handlePayment(order._id);
-                                            }}
+                                    <div className="flex items-center gap-4 p-2">
+                                      <img
+                                        src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+                                        alt="PayPal"
+                                        className="w-6 h-6"
+                                      />
+                                      <div>
+                                        <h4 className="font-semibold text-blue-600">
+                                          Thanh toán qua PayPal
+                                          <Tag
+                                            color="green"
+                                            className="ml-2"
                                           >
-                                            Thanh toán ngay
-                                          </Button>
-                                        </Visibility>
+                                            Đã thanh toán
+                                          </Tag>
+                                        </h4>
+                                        <p className="text-gray-500">
+                                          Đã thanh toán lúc {new Date(order.updatedAt).toLocaleString()}
+                                        </p>
                                       </div>
-                                    )}
+                                    </div>
                                   </Card>
                                 </motion.div>
                               </div>
 
-                              {order.orderStatus ===
-                                EOrderStatus.PROCESSING && (
-                                <motion.div whileHover={{ scale: 1.02 }}>
-                                  <Button
-                                    danger
-                                    block
-                                    className="mt-4"
-                                    onClick={() => {
-                                      handleCancelOrder(order._id);
-                                    }}
-                                  >
-                                    Hủy đơn hàng
-                                  </Button>
-                                </motion.div>
-                              )}
+                              {/* Đã loại bỏ nút hủy đơn hàng vì đơn hàng PayPal không thể hủy */}
                             </div>
 
                             {/* {order.orderStatus === EOrderStatus.DELIVERED &&

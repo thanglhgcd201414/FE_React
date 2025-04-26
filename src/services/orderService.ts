@@ -50,14 +50,7 @@ class OrderService {
     }
   }
 
-  public async cancelOrder(id: string): Promise<IBaseResponse<any>> {
-    try {
-      const rs = await axiosRequest.delete(`${this._prefixURL}/${id}`);
-      return Promise.resolve(rs.data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
+  // Đã loại bỏ phương thức cancelOrder vì không hỗ trợ hủy đơn hàng PayPal
 }
 
 export default OrderService;

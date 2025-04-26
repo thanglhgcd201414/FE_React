@@ -30,6 +30,7 @@ export default function ListProduct() {
   const handleGetProductsList = async () => {
     try {
       setLoading(true);
+      
       const rs = await productService.findAll(query);
       setProductsList(rs.data.content);
       setQuery((prev) => ({ ...prev, total: rs.data.metaData.totalItem }));

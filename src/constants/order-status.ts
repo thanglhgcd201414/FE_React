@@ -2,7 +2,7 @@ enum EOrderStatus {
   PROCESSING = 'PROCESSING',
   SHIPPING = 'SHIPPING',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED',
+  // Đã loại bỏ trạng thái CANCELLED vì không hỗ trợ hủy đơn hàng PayPal
 }
 
 enum EPaymentStatus {
@@ -11,8 +11,7 @@ enum EPaymentStatus {
 }
 
 enum EPaymentMethod {
-  CAST = 'CAST',
-  BANK_TRANSFER = 'BANK_TRANSFER',
+  PAYPAL = 'PAYPAL',
 }
 
 export { EOrderStatus, EPaymentStatus, EPaymentMethod };

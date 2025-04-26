@@ -1,8 +1,11 @@
 export function formatCurrency(amount?: number): string {
-  if (!amount) return '0 VNĐ';
-  const roundedAmount = amount.toFixed(0);
+  if (!amount) return '$0.00';
 
-  const formattedAmount = roundedAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-  return `${formattedAmount} VNĐ`;
+  // Format as USD with 2 decimal places
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(amount);
 }

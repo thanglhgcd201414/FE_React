@@ -1,11 +1,7 @@
 import { Card, Radio } from 'antd';
 import { motion } from 'framer-motion';
 import { EPaymentMethod } from '../../../../constants/order-status';
-import {
-  CreditCardOutlined,
-  TruckOutlined,
-  WalletOutlined,
-} from '@ant-design/icons';
+import { CreditCardOutlined } from '@ant-design/icons';
 
 interface IProps {
   paymentMethod: EPaymentMethod;
@@ -33,49 +29,21 @@ export default function StepTwo({ paymentMethod, setPaymentMethod }: IProps) {
           <div className="space-y-4">
             <motion.div whileHover={{ scale: 1.02 }}>
               <Radio
-                value={EPaymentMethod.CAST}
+                value={EPaymentMethod.PAYPAL}
                 className="w-full p-4 border rounded-lg"
+                checked={true}
               >
                 <div className="flex items-center gap-4">
-                  <TruckOutlined className="text-2xl text-green-600" />
+                  <img
+                    src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+                    alt="PayPal"
+                    className="w-8 h-8"
+                  />
                   <div>
                     <h4 className="font-semibold">
-                      Thanh toán khi nhận hàng (COD)
+                      PayPal
                     </h4>
-                    <p className="text-gray-500">Phí xử lý: 0đ</p>
-                  </div>
-                </div>
-              </Radio>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Radio
-                value={EPaymentMethod.BANK_TRANSFER}
-                className="w-full p-4 border rounded-lg"
-              >
-                <div className="flex items-center gap-4">
-                  <WalletOutlined className="text-2xl text-orange-600" />
-                  <div>
-                    <h4 className="font-semibold">Ví điện tử</h4>
-                    <p className="text-gray-500">VNPay</p>
-                  </div>
-                </div>
-              </Radio>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Radio
-                value="credit"
-                className="w-full p-4 border rounded-lg"
-                disabled
-              >
-                <div className="flex items-center gap-4">
-                  <CreditCardOutlined className="text-2xl text-purple-600" />
-                  <div>
-                    <h4 className="font-semibold">
-                      Thẻ tín dụng/ghi nợ (Hiện chưa hỗ trợ chức năng này)
-                    </h4>
-                    <p className="text-gray-500">Hỗ trợ Visa, MasterCard</p>
+                    <p className="text-gray-500">Thanh toán an toàn qua PayPal</p>
                   </div>
                 </div>
               </Radio>

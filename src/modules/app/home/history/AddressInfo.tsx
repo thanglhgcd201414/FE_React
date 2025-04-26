@@ -16,22 +16,37 @@ const DisplayItem = ({ label, value }: { label: string, value: string }) => (
 );
 
 export default function AddressInfo({ order }: Props) {
+  // Kiểm tra xem order.shippingAddress có tồn tại không
+  if (!order.shippingAddress) {
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 mb-3">
+          <EnvironmentOutlined className="text-blue-600 text-lg" />
+          <Text strong className="text-base">
+            Địa chỉ giao hàng
+          </Text>
+        </div>
+        <Text type="secondary">Không có thông tin địa chỉ</Text>
+      </div>
+    );
+  }
+
   const DEFINE_ADDRESS = [
     {
       label: 'Tỉnh/thành phố',
-      value: order.shippingAddress.city,
+      value: order.shippingAddress.city || 'Không có thông tin',
     },
     {
       label: 'Quận/huyện',
-      value: order.shippingAddress.district,
+      value: order.shippingAddress.district || 'Không có thông tin',
     },
     {
       label: 'Phường/xã',
-      value: order.shippingAddress.ward,
+      value: order.shippingAddress.ward || 'Không có thông tin',
     },
     {
       label: 'Địa chỉ đường',
-      value: order.shippingAddress.street,
+      value: order.shippingAddress.street || 'Không có thông tin',
     },
   ];
 

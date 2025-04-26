@@ -18,8 +18,14 @@ export default function History() {
     setLoading(true);
     try {
       const rs = await orderService.findAll(query);
-      setOrders(rs.data.content);
-      setQuery((prev) => ({ ...prev, total: rs.data.metaData.totalItem }));
+
+      // Lọc bỏ các đơn hàng có trạng thái CANCELLED
+      const filteredOrders = rs.data.content.filter(
+        (order) => (order.orderStatus as string) !== 'CANCELLED'
+      );
+
+      setOrders(filteredOrders);
+      setQuery((prev) => ({ ...prev, total: filteredOrders.length }));
     } finally {
       setLoading(false);
     }

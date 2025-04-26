@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { Table, Tag, Modal, Select, Image, Typography, Avatar } from 'antd';
 import { motion } from 'framer-motion';
-import {
-  EOrderStatus,
-  EPaymentMethod,
-  EPaymentStatus,
-} from '../../../../constants/order-status';
+import { EOrderStatus } from '../../../../constants/order-status';
 import { IOrder } from '../../../../types/order.types';
 import { formatCurrency } from '../../../../utils/format-money';
 import {
-  CreditCardOutlined,
   DollarOutlined,
   ShoppingOutlined,
   TagOutlined,
@@ -63,20 +58,12 @@ const AdminOrdersPage = ({
     {
       title: 'Thanh toán',
       key: 'payment',
-      render: (record: IOrder) => (
+      render: (_: IOrder) => (
         <Tag
-          color={record.paymentStatus === EPaymentStatus.PAID ? 'green' : 'red'}
-          icon={
-            record.paymentMethod === EPaymentMethod.BANK_TRANSFER ? (
-              <CreditCardOutlined />
-            ) : (
-              <DollarOutlined />
-            )
-          }
+          color="green"
+          icon={<DollarOutlined />}
         >
-          {record.paymentStatus === EPaymentStatus.PAID
-            ? 'Đã thanh toán'
-            : 'Chưa thanh toán'}
+          Đã thanh toán qua PayPal
         </Tag>
       ),
     },
@@ -180,13 +167,16 @@ const AdminOrdersPage = ({
                   loading={loading}
                   className="flex-1"
                 >
-                  {Object.values(EOrderStatus).map((status) => (
+                  {/* Chỉ hiển thị các trạng thái được hỗ trợ (không bao gồm CANCELLED) */}
+                  {[EOrderStatus.PROCESSING, EOrderStatus.SHIPPING, EOrderStatus.DELIVERED].map((status) => (
                     <Option key={status} value={status}>
                       <motion.div whileHover={{ scale: 1.02 }}>
                         <OrderStatusTag status={status} />
                       </motion.div>
                     </Option>
                   ))}
+
+                  {/* Đã loại bỏ hiển thị trạng thái CANCELLED */}
                 </Select>
               </div>
             </motion.div>
@@ -203,26 +193,16 @@ const AdminOrdersPage = ({
                   className="flex items-center gap-4 p-3 bg-white rounded-md shadow-sm"
                   whileHover={{ scale: 1.02 }}
                 >
-                  {selectedOrder.paymentMethod === EPaymentMethod.CAST ? (
-                    <DollarOutlined className="text-2xl text-green-500" />
-                  ) : (
-                    <CreditCardOutlined className="text-2xl text-blue-500" />
-                  )}
-                  <Tag
-                    color={
-                      selectedOrder.paymentStatus === EPaymentStatus.PAID
-                        ? 'green'
-                        : 'red'
-                    }
-                  >
-                    {selectedOrder.paymentMethod === EPaymentMethod.CAST
-                      ? 'Tiền mặt'
-                      : 'Chuyển khoản'}
+                  <img
+                    src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+                    alt="PayPal"
+                    className="w-8 h-8"
+                  />
+                  <Tag color="green">
+                    PayPal
                   </Tag>
                   <Text className="flex-1">
-                    {selectedOrder.paymentStatus === EPaymentStatus.PAID
-                      ? `Đã thanh toán - ${new Date(selectedOrder.updatedAt).toLocaleString()}`
-                      : 'Chưa thanh toán'}
+                    Đã thanh toán - {new Date(selectedOrder.updatedAt).toLocaleString()}
                   </Text>
                 </motion.div>
               </div>
@@ -292,26 +272,32 @@ const AdminOrdersPage = ({
                         className="flex gap-4 p-3 bg-white rounded-md shadow-sm hover:shadow-md transition-shadow"
                       >
                         <Image
-                          src={buildImageUrl(item.productId.images[0])}
+                          src={item.productId && item.productId.images && item.productId.images.length > 0
+                            ? buildImageUrl(item.productId.images[0])
+                            : "https://placehold.co/80x80?text=No+Image"}
                           width={80}
                           height={80}
                           className="rounded-lg object-contain border"
                           preview={false}
+                          alt={item.productId?.name || "Product image"}
                         />
                         <div className="flex-1">
                           <Text strong className="block">
-                            {item.productId.name}
+                            {item.productId?.name || "Sản phẩm không xác định"}
                           </Text>
                           <div className="flex gap-2 mt-1">
-                            {item.productId.categories.map((category, idx) => (
-                              <Tag
-                                key={idx}
-                                color="blue"
-                                className="flex items-center gap-1"
-                              >
-                                {category.name}
-                              </Tag>
-                            ))}
+                            {item.productId?.categories?.length > 0
+                              ? item.productId.categories.map((category, idx) => (
+                                  <Tag
+                                    key={idx}
+                                    color="blue"
+                                    className="flex items-center gap-1"
+                                  >
+                                    {category.name || "Không có danh mục"}
+                                  </Tag>
+                                ))
+                              : <Tag color="blue">Không có danh mục</Tag>
+                            }
                           </div>
                           <div className="flex items-center gap-4 mt-2">
                             <Text>Số lượng: {item.quantity}</Text>
@@ -320,7 +306,7 @@ const AdminOrdersPage = ({
                               className="flex items-center gap-1"
                             >
                               <Text strong>
-                                {formatCurrency(item.productId.price)}
+                                {formatCurrency(item.productId?.price || 0)}
                               </Text>
                             </Tag>
                           </div>
