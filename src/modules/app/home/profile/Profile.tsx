@@ -8,9 +8,7 @@ import {
   Card,
   Row,
   Col,
-  Divider,
   Flex,
-  Empty,
 } from 'antd';
 import {
   UserOutlined,
@@ -18,8 +16,6 @@ import {
   EditOutlined,
   MailOutlined,
   PhoneOutlined,
-  EnvironmentOutlined,
-  DeleteOutlined,
 } from '@ant-design/icons';
 import { useForm } from 'antd/es/form/Form';
 import { useState, useEffect } from 'react';
@@ -107,7 +103,7 @@ const ProfilePage = () => {
             </Button>
           )
         }
-        headStyle={{ borderBottom: '2px solid #f0f0f0' }}
+        styles={{ header: { borderBottom: '2px solid #f0f0f0' } }}
       >
         <Form
           form={form}
@@ -190,98 +186,7 @@ const ProfilePage = () => {
               </Form.Item>
             </Col>
 
-            <Col span={24}>
-              <Divider orientation="left">
-                <Flex align="center" gap={8}>
-                  <EnvironmentOutlined className="text-green-600" />
-                  <span className="text-gray-600 font-medium">
-                    Địa chỉ giao hàng
-                  </span>
-                </Flex>
-              </Divider>
-{/* 
-              {
-                !userData?.shippingAddress.length && <Empty description="Không có dữ liệu"/>
-              } */}
-
-              <Form.List name="shippingAddress">
-                {(fields, { add, remove }) => (
-                  <div className="space-y-4">
-                    {fields.map(({ key, name, ...restField }) => (
-                      <div
-                        key={key}
-                        className="p-4 border rounded-lg hover:border-blue-200 transition-colors"
-                      >
-                        <Row gutter={16} align="middle">
-                          <Col span={8}>
-                            <Form.Item
-                              {...restField}
-                              label="Thành Phố"
-                              name={[name, 'city']}
-                              rules={[{ required: true }]}
-                            >
-                              <Input disabled={!editMode} />
-                            </Form.Item>
-                          </Col>
-                          <Col span={8}>
-                            <Form.Item
-                              {...restField}
-                              label="Quận/Huyện"
-                              name={[name, 'district']}
-                              rules={[{ required: true }]}
-                            >
-                              <Input disabled={!editMode} />
-                            </Form.Item>
-                          </Col>
-                          <Col span={8}>
-                            <Form.Item
-                              {...restField}
-                              label="Phường/Xã"
-                              name={[name, 'ward']}
-                              rules={[{ required: true }]}
-                            >
-                              <Input disabled={!editMode} />
-                            </Form.Item>
-                          </Col>
-                          <Col span={7}>
-                            <Form.Item
-                              {...restField}
-                              label="Đường/Phố"
-                              name={[name, 'street']}
-                              rules={[{ required: true }]}
-                            >
-                              <Input disabled={!editMode} />
-                            </Form.Item>
-                          </Col>
-                          {editMode && (
-                            <Col span={1}>
-                              <Button
-                                danger
-                                type="text"
-                                icon={<DeleteOutlined />}
-                                onClick={() => remove(name)}
-                                className="text-red-500 hover:text-red-600"
-                              />
-                            </Col>
-                          )}
-                        </Row>
-                      </div>
-                    ))}
-                    {editMode && (
-                      <Button
-                        type="dashed"
-                        onClick={() => add()}
-                        block
-                        icon={<EnvironmentOutlined />}
-                        className="mt-4 h-10 text-blue-600"
-                      >
-                        Thêm địa chỉ mới
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </Form.List>
-            </Col>
+            {/* Phần địa chỉ giao hàng đã được loại bỏ theo yêu cầu */}
 
             {editMode && (
               <Col span={24} className="mt-6">

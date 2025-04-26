@@ -36,6 +36,7 @@ const CheckoutPage = () => {
 
   const [formData, setFormData] = useState({
     name: '',
+    phoneNumber: '',
     city: '',
     district: '',
     ward: '',
@@ -61,7 +62,9 @@ const CheckoutPage = () => {
       setFormData((prev) => ({
         ...prev,
         name: userData.name || '',
+        phoneNumber: userData.phoneNumber || '',
       }));
+      console.log('User data loaded:', userData);
     }
   }, [userData]);
 
@@ -89,6 +92,11 @@ const CheckoutPage = () => {
     }
     if (!formData.name.trim()) {
       message.error('Vui lòng nhập họ tên');
+      return false;
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      message.error('Vui lòng nhập số điện thoại');
       return false;
     }
 
@@ -122,6 +130,8 @@ const CheckoutPage = () => {
           ward: formData.ward,
         },
         paymentMethod,
+        // Thêm phoneNumber vào dữ liệu đơn hàng
+        phoneNumber: formData.phoneNumber,
         // Không cần truyền items và totalAmount vì backend sẽ tự tính từ giỏ hàng
       };
 
@@ -236,9 +246,6 @@ const CheckoutPage = () => {
                     <div className="flex-1">
                       <h4 className="font-medium">{item.productId.name}</h4>
                       <div className="flex flex-wrap gap-2 text-sm text-gray-500">
-                        {item.productId.categories.map((cat, idx) => (
-                          <Tag key={idx} color="blue">{cat.name}</Tag>
-                        ))}
                         <span className="ml-auto">x{item.quantity}</span>
                       </div>
                       <div className="mt-1">
