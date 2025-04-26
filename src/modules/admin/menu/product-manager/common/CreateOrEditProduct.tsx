@@ -39,7 +39,7 @@ export default function CreateOrEditProduct({ item, handleSubmit }: IProps) {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     try {
-      const uploadedImages = await handleUploadFiles();
+      const uploadedImages = await handleUploadFiles(files);
       const existingImages = item?.images?.filter(
         (url) => !deletedImages.includes(url)
       ) || [];
@@ -54,6 +54,8 @@ export default function CreateOrEditProduct({ item, handleSubmit }: IProps) {
       message.error('Có lỗi xảy ra khi tải lên hình ảnh');
     }
   };
+
+
   const handleUploadFiles = async (files: UploadFile[]) => {
     const uploadedUrls = await Promise.all(
       files.map(async (file) => {
@@ -69,20 +71,6 @@ export default function CreateOrEditProduct({ item, handleSubmit }: IProps) {
     return uploadedUrls.filter((url) => url);
   };
 
-  // const handleUploadImages = async () => {
-  //   if (!files.length) return [];
-
-  //   const formData = new FormData();
-  //   files.forEach((file) => {
-  //     if (file.originFileObj) {
-  //       formData.append('images', file.originFileObj);
-  //     }
-  //   });
-
-  //   const rs = await uploadService.uploadImage(formData);
-  //   const uploadedUrls = rs.data.map((item: { url: string }) => item.url);
-  //   return uploadedUrls.filter((url) => url);
-  // };
 
   const handleGetCategoriesList = async () => {
     const rs = await categoryService.findAll({

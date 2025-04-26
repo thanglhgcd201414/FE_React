@@ -1,32 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Input,
   Checkbox,
   Pagination,
   Spin,
-  Select,
   Empty,
   Typography,
 } from 'antd';
-import { AppstoreOutlined, SearchOutlined } from '@ant-design/icons';
+import { AppstoreOutlined } from '@ant-design/icons';
 import { categoryService, productService } from '../../../services';
 import { IProduct } from '../../../types/product.types';
 import { ICategory } from '../../../types/category';
 import DisplayProduct from './_components/DisplayProduct';
 import Visibility from '../../../components/base/visibility';
-import { useDebounce } from '@uidotdev/usehooks';
+
 
 export default function ListProduct() {
   const [query, setQuery] = React.useState({
     page: 1,
     limit: 8,
-    search: '',
     categoryIds: [],
-    sortPrice: 'DESC',
     total: 0,
   });
-  const debouncedSearchTerm = useDebounce(query.search, 300);
   const [productsList, setProductsList] = React.useState<IProduct[]>([]);
 
   const [categories, setCategories] = React.useState<ICategory[]>([]);
@@ -43,16 +38,8 @@ export default function ListProduct() {
     }
   };
 
-  const handleSearch = (value: string) => {
-    setQuery((prev) => ({ ...prev, search: value, page: 1 }));
-  };
-
   const handleCategoryChange = (checkedValues: any) => {
     setQuery((prev) => ({ ...prev, categoryIds: checkedValues, page: 1 }));
-  };
-
-  const handleSortChange = (value: any) => {
-    setQuery((prev) => ({ ...prev, sortPrice: value, page: 1 }));
   };
 
   React.useEffect(() => {
@@ -60,9 +47,7 @@ export default function ListProduct() {
   }, [
     query.page,
     query.limit,
-    debouncedSearchTerm,
     query.categoryIds,
-    query.sortPrice,
   ]);
 
   React.useEffect(() => {
@@ -76,19 +61,6 @@ export default function ListProduct() {
   return (
     <div className="container mx-auto p-4 flex gap-6">
       <div className="w-1/4 space-y-6 pr-4">
-        <div className="relative group">
-          <Input
-            placeholder="Search products..."
-            suffix={
-              <SearchOutlined className="text-gray-400 group-hover:text-blue-500 transition-colors" />
-            }
-            allowClear
-            onChange={(e) => handleSearch(e.target.value)}
-            className="rounded-xl shadow-sm hover:shadow-md transition-all
-                border-gray-300 hover:border-blue-400 focus:border-blue-500
-                py-2 px-4 text-base"
-          />
-        </div>
 
         <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
           <Typography.Title
@@ -129,23 +101,6 @@ export default function ListProduct() {
       </div>
 
       <div className="w-3/4">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-lg font-semibold">Sort by:</span>
-          <Select
-            options={[
-              {
-                label: 'Price: High to Low',
-                value: 'DESC',
-              },
-              {
-                label: 'Price: Low to High',
-                value: 'ASC',
-              },
-            ]}
-            defaultValue="DESC"
-            onChange={handleSortChange}
-          />
-        </div>
 
         {loading ? (
           <div className="text-center py-8">

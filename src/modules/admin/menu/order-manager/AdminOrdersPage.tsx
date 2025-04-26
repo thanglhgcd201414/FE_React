@@ -141,7 +141,7 @@ const AdminOrdersPage = ({
           >
             <ShoppingOutlined className="text-blue-500 text-xl" />
             <Title level={4} className="!mb-0">
-              Chi tiết đơn hàng #{selectedOrder?.trackingNumber}
+              Chi tiết đơn hàng #{selectedOrder?._id}
             </Title>
           </motion.div>
         }
@@ -285,9 +285,6 @@ const AdminOrdersPage = ({
                   className="space-y-4"
                 >
                   {selectedOrder.items.map((item, index) => {
-                    const selectedVariant = item.productId.variants.find(
-                      (_variant) => _variant.sku === item.sku,
-                    );
                     return (
                       <motion.div
                         key={index}
@@ -306,15 +303,15 @@ const AdminOrdersPage = ({
                             {item.productId.name}
                           </Text>
                           <div className="flex gap-2 mt-1">
-                            <Tag
-                              color="blue"
-                              className="flex items-center gap-1"
-                            >
-                              {selectedVariant?.color}
-                            </Tag>
-                            <Tag className="flex items-center gap-1">
-                              {selectedVariant?.storageCapacity}
-                            </Tag>
+                            {item.productId.categories.map((category, idx) => (
+                              <Tag
+                                key={idx}
+                                color="blue"
+                                className="flex items-center gap-1"
+                              >
+                                {category.name}
+                              </Tag>
+                            ))}
                           </div>
                           <div className="flex items-center gap-4 mt-2">
                             <Text>Số lượng: {item.quantity}</Text>
@@ -323,7 +320,7 @@ const AdminOrdersPage = ({
                               className="flex items-center gap-1"
                             >
                               <Text strong>
-                                {formatCurrency(selectedVariant?.price)}
+                                {formatCurrency(item.productId.price)}
                               </Text>
                             </Tag>
                           </div>

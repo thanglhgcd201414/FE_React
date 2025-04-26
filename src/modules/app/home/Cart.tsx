@@ -20,6 +20,7 @@ const Cart = () => {
   const loadCart = async () => {
     try {
       const { data } = await cartService.find();
+      console.log("Cart data received:", data);
       setCart(data);
     } finally {
       setLoading(false);
@@ -38,7 +39,6 @@ const Cart = () => {
       const { data } = await cartService.update(cart._id, { 
         items: updatedItems.map(item => ({
           productId: item.productId._id,
-          sku: item.sku,
           quantity: item.quantity
         }))
       });
@@ -58,12 +58,11 @@ const Cart = () => {
       const { data } = await cartService.update(cart._id, { 
         items: filteredItems.map(item => ({
           productId: item.productId._id,
-          sku: item.sku,
           quantity: item.quantity
         }))
       });
       setCart(data);
-      dispatch(addCartInfo(cart))
+      dispatch(addCartInfo(data))
     } finally {
       setUpdating(false);
     }
@@ -80,6 +79,19 @@ const Cart = () => {
       </div>
     );
   }
+
+  // Tính tổng giá trị giỏ hàng
+  const calculateSubtotal = () => {
+    if (!cart?.items.length) return 0;
+    return cart.items.reduce((acc, item) => {
+      return acc + (item.productId.price || 0) * item.quantity;
+    }, 0);
+  };
+
+  // Tính tổng thanh toán (bao gồm phí ship)
+  const calculateTotal = () => {
+    return calculateSubtotal() + 30000; // 30,000 VND phí ship
+  };
 
   return (
     <motion.div
@@ -100,14 +112,7 @@ const Cart = () => {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 space-y-4">
               {cart.items.map((item) => {
-                const variant = item.productId.variants.find(v => v.sku === item.sku);
-                const price = variant?.price || 0;
-                const originalPrice = variant?.originalPrice || 0;
-                const hasDiscount = originalPrice > price;
-                const totalDiscount = originalPrice - price;
-                const discountPercentage = hasDiscount 
-                  ? Math.round(((originalPrice - price) / originalPrice) * 100)
-                  : 0;
+                const price = item.productId.price || 0;
 
                 return (
                   <motion.div
@@ -128,10 +133,10 @@ const Cart = () => {
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-gray-800 truncate">{item.productId.name}</h3>
                       <div className="flex gap-2 mt-1 flex-wrap">
-                        <Tag color="blue">{variant?.color}</Tag>
-                        <Tag>{variant?.storageCapacity}</Tag>
+                        {item.productId.categories.map((category, index) => (
+                          <Tag key={index} color="blue">{category.name}</Tag>
+                        ))}
                       </div>
-                      <p className="text-gray-500 text-sm mt-1 truncate">SKU: {item.sku}</p>
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -158,25 +163,7 @@ const Cart = () => {
 
                     <div className="w-32 text-right">
                       <div className="flex flex-col">
-                        {hasDiscount && (
-                          <>
-                            <span className="text-gray-400 line-through text-sm">
-                              {new Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND'
-                              }).format(originalPrice * item.quantity)}
-                            </span>
-                            <Tag color="red" className="self-end mt-1">
-                              -{discountPercentage}% ({new Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND'
-                              }).format(totalDiscount)})
-                            </Tag>
-                          </>
-                        )}
-                        <span className={`font-medium ${
-                          hasDiscount ? 'text-green-600' : 'text-gray-800'
-                        }`}>
+                        <span className="font-medium text-gray-800">
                           {new Intl.NumberFormat('vi-VN', {
                             style: 'currency',
                             currency: 'VND'
@@ -207,48 +194,12 @@ const Cart = () => {
                   </div>
 
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Tổng giá gốc</span>
-                    <span className="text-gray-400 line-through text-sm">
-                      {new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                      }).format(
-                        cart.items.reduce((acc, item) => {
-                          const variant = item.productId.variants.find(v => v.sku === item.sku);
-                          return acc + (variant?.originalPrice || variant?.price || 0) * item.quantity;
-                        }, 0)
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Giảm giá sản phẩm</span>
-                    <span className="text-red-600 font-bold">
-                      -{new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                      }).format(
-                        cart.items.reduce((acc, item) => {
-                          const variant = item.productId.variants.find(v => v.sku === item.sku);
-                          const originalPrice = variant?.originalPrice || variant?.price || 0;
-                          return acc + (originalPrice - (variant?.price ?? 0)) * item.quantity;
-                        }, 0)
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center">
                     <span className="text-gray-600">Tạm tính</span>
                     <span className="text-green-600 font-bold">
                       {new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND'
-                      }).format(
-                        cart.items.reduce((acc, item) => {
-                          const variant = item.productId.variants.find(v => v.sku === item.sku);
-                          return acc + (variant?.price ?? 0) * item.quantity;
-                        }, 0)
-                      )}
+                      }).format(calculateSubtotal())}
                     </span>
                   </div>
 
@@ -273,12 +224,7 @@ const Cart = () => {
                       {new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND'
-                      }).format(
-                        cart.items.reduce((acc, item) => {
-                          const variant = item.productId.variants.find(v => v.sku === item.sku);
-                          return acc + (variant?.price ?? 0) * item.quantity;
-                        }, 0) + 30000
-                      )}
+                      }).format(calculateTotal())}
                     </span>
                   </div>
 

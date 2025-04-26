@@ -12,9 +12,12 @@ class CartService {
    */
   public async addItemToCart(id: string, data: Record<string, any>): Promise<IBaseResponse<ICart>> {
     try {
+      console.log(`Adding item to cart: ${this._prefixURL}/${id}`, data);
       const rs = await axiosRequest.post(`${this._prefixURL}/${id}`, data);
+      console.log('Add to cart response:', rs.data);
       return Promise.resolve(rs.data);
     } catch (error) {
+      console.error('Add to cart error:', error);
       return Promise.reject(error);
     }
   }

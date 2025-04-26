@@ -30,13 +30,12 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<EPaymentMethod>(
     EPaymentMethod.CAST,
   );
-
+  const [orderId, setOrderId] = useState<string>('');
   const [isConfirmedTerm, setIsConfirmedTerm] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: '',
-    address: '',
     city: '',
     district: '',
     ward: '',
@@ -114,6 +113,7 @@ const CheckoutPage = () => {
   const handleSubmitOrder = async () => {
     if (!validateStep0()) return;
     try {
+      // Chuẩn bị dữ liệu đơn hàng theo schema mới
       const orderData = {
         shippingAddress: {
           city: formData.city,
@@ -122,13 +122,20 @@ const CheckoutPage = () => {
           ward: formData.ward,
         },
         paymentMethod,
+        // Không cần truyền items và totalAmount vì backend sẽ tự tính từ giỏ hàng
       };
 
       const rs = await orderService.create(orderData);
 
+      // Lưu orderId để hiển thị trong bước xác nhận
+      setOrderId(rs.data._id);
+
+      // Xử lý thanh toán nếu chọn phương thức chuyển khoản
       if(rs.data.paymentMethod === EPaymentMethod.BANK_TRANSFER) {
         handlePayment(rs.data._id);
       }
+
+      // Cập nhật UI và xóa giỏ hàng
       setCurrentStep(2);
       message.success('Đặt hàng thành công');
       dispatch(clearCart());
@@ -173,7 +180,7 @@ const CheckoutPage = () => {
               />
             )}
 
-            {currentStep === 2 && <StepThree />}
+            {currentStep === 2 && <StepThree orderId={orderId} />}
           </AnimatePresence>
 
           <div className="flex justify-between mt-6">
@@ -219,9 +226,6 @@ const CheckoutPage = () => {
               extra={<ShoppingCartOutlined className="text-blue-600" />}
             >
               {cart?.items.map((item) => {
-                const variant = item.productId.variants.find(
-                  (v) => v.sku === item.sku,
-                );
                 return (
                   <div key={item._id} className="flex gap-4 py-3 border-b">
                     <img
@@ -232,13 +236,14 @@ const CheckoutPage = () => {
                     <div className="flex-1">
                       <h4 className="font-medium">{item.productId.name}</h4>
                       <div className="flex flex-wrap gap-2 text-sm text-gray-500">
-                        <Tag color="blue">{variant?.color}</Tag>
-                        <Tag>{variant?.storageCapacity}</Tag>
+                        {item.productId.categories.map((cat, idx) => (
+                          <Tag key={idx} color="blue">{cat.name}</Tag>
+                        ))}
                         <span className="ml-auto">x{item.quantity}</span>
                       </div>
                       <div className="mt-1">
                         <span className="font-medium">
-                          {formatCurrency(variant?.price || 0)}
+                          {formatCurrency(item.productId.price || 0)}
                         </span>
                       </div>
                     </div>

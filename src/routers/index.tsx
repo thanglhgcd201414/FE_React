@@ -27,8 +27,7 @@ import HomeUser from '../modules/app/home/HomeUser';
 import Login from '../modules/app/auth/Login';
 import Register from '../modules/app/auth/Register';
 import TheLayoutAuth from '../modules/app/auth/TheLayoutAuth';
-import AboutUs from '../modules/app/home/landing/AboutUs';
-import ContactUs from '../modules/app/home/landing/ContactUs';
+
 import ListProduct from '../modules/app/home/ListProduct';
 import ProductDetail from '../modules/app/home/product-detail/ProductDetail';
 import Cart from '../modules/app/home/Cart';
@@ -86,14 +85,14 @@ const router = createBrowserRouter([
         path: DEFINE_USER_ROUTERS.myCart,
         element: <Cart />,
       },
-      {
-        path: DEFINE_USER_ROUTERS.aboutUs,
-        element: <AboutUs />,
-      },
-      {
-        path: DEFINE_USER_ROUTERS.contactUs,
-        element: <ContactUs />,
-      },
+      // {
+      //   path: DEFINE_USER_ROUTERS.aboutUs,
+      //   element: <AboutUs />,
+      // },
+      // {
+      //   path: DEFINE_USER_ROUTERS.contactUs,
+      //   element: <ContactUs />,
+      // },
       {
         path: DEFINE_USER_ROUTERS.paymentSuccess,
         element: <PaymentSuccess />,

@@ -12,11 +12,8 @@ export default function DisplayItems({ order }: Props) {
   return (
     <div className="space-y-4">
       {order.items.map((item) => {
-        const selectedVariant = item.productId.variants.find(
-          (_variant) => _variant.sku === item.sku,
-        );
         return (
-          <div key={item.sku} className="flex gap-4">
+          <div key={`${item.productId._id}-${item.quantity}`} className="flex gap-4">
             <Image
               src={buildImageUrl(item.productId.images[0])}
               width={80}
@@ -29,14 +26,15 @@ export default function DisplayItems({ order }: Props) {
                 {item.productId.name}
               </Text>
               <div className="flex gap-2 mt-1">
-                <Tag color="blue">{selectedVariant?.color}</Tag>
-                <Tag>{selectedVariant?.storageCapacity}</Tag>
+                {item.productId.categories.map((category, index) => (
+                  <Tag key={index} color="blue">{category.name}</Tag>
+                ))}
               </div>
               <div className="flex items-center gap-4 mt-2">
                 <Text>Số lượng: {item.quantity}</Text>
                 <Tag color='geekblue'>
                   <Text strong className="text-black">
-                    {formatCurrency(selectedVariant?.price)}
+                    {formatCurrency(item.productId.price)}
                   </Text>
                 </Tag>
               </div>

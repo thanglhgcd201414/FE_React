@@ -32,16 +32,22 @@ export default function TheHeader() {
   const handleGetCart = async () => {
     try {
       if (!userData?._id) return;
+      console.log("Fetching cart for user:", userData._id);
       const rs = await cartService.find();
+      console.log("Cart data received:", rs.data);
       dispatch(addCartInfo(rs.data));
     } catch (error) {
+      console.error("Error fetching cart:", error);
       // dispatch(setUser(undefined));
     }
   };
 
   useEffect(() => {
-    if (userData?._id) handleGetCart();
-  }, []);
+    if (userData?._id) {
+      console.log("User logged in, fetching cart...");
+      handleGetCart();
+    }
+  }, [userData]);
 
   const handleLogout = () => {
     cookiesStore.remove('admin');
@@ -76,8 +82,8 @@ export default function TheHeader() {
   const navLinks = [
     { to: DEFINE_USER_ROUTERS.home, label: 'Trang chủ' },
     { to: DEFINE_USER_ROUTERS.listProduct, label: 'Sản phẩm' },
-    { to: DEFINE_USER_ROUTERS.aboutUs, label: 'Về chúng tôi' },
-    { to: DEFINE_USER_ROUTERS.contactUs, label: 'Liên hệ' },
+    // { to: DEFINE_USER_ROUTERS.aboutUs, label: 'Về chúng tôi' },
+    // { to: DEFINE_USER_ROUTERS.contactUs, label: 'Liên hệ' },
   ];
 
   return (

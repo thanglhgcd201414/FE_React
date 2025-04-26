@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 import { CheckCircleOutlined } from '@ant-design/icons';
 
 interface IProps {
-  trackingNumber?: string;
+  orderId?: string;
 }
 
-export default function StepThree({ trackingNumber }: IProps) {
+export default function StepThree({ orderId }: IProps) {
   return (
     <motion.div
       key="step3"
@@ -28,7 +28,7 @@ export default function StepThree({ trackingNumber }: IProps) {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <span className="font-semibold">Mã đơn hàng:</span>
-            <Tag color="blue">{trackingNumber}</Tag>
+            <Tag color="blue">{orderId}</Tag>
           </div>
           <Divider />
           <Button type="primary" onClick={() => (window.location.href = '/')}>

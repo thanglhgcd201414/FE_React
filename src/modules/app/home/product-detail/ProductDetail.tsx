@@ -67,12 +67,25 @@ export default function ProductDetail() {
 
 
   const handleAddToCart = async () => {
-    if(!cartInfo?._id) {
+    if(!userData) {
       message.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
       return;
     }
 
+    if(!cartInfo?._id) {
+      message.error("Không tìm thấy giỏ hàng của bạn. Vui lòng tải lại trang");
+      console.error("Cart info not found:", cartInfo);
+      return;
+    }
+
     try {
+      console.log("Adding to cart:", {
+        cartId: cartInfo._id,
+        productId: product!._id,
+        quantity: 1
+      });
+
+      // Trong schema mới, chúng ta chỉ cần truyền productId và quantity
       const rs = await cartService.addItemToCart(cartInfo._id, {
         productId: product!._id,
         quantity: 1
@@ -82,6 +95,7 @@ export default function ProductDetail() {
 
       message.success('Đã thêm vào giỏ hàng');
     } catch (error) {
+      console.error("Add to cart error:", error);
       message.error('Thêm vào giỏ hàng thất bại');
     }
   };

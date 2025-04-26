@@ -13,9 +13,9 @@ export default function OrderInfo({ order, color, icon, label }: IProps) {
   return (
     <div className="flex justify-between items-start mb-4">
       <div>
-        <Text strong className="text-lg">
-          Mã đơn hàng: {order.trackingNumber}
-        </Text>
+        {/* <Text strong className="text-lg">
+          Mã đơn hàng: {order.shippingAddress}
+        </Text> */}
         <div className="mt-1">
           <Tag
             color={color}

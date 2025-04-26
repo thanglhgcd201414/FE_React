@@ -1,6 +1,6 @@
 import { Button, Form, Input, message, Modal, Spin, Table, TableProps } from "antd";
 import * as React from "react";
-import BaseSearch from "../../../../components/base/BaseSearch";
+
 import { IQueryUser } from "../../../../types/user.types";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ICategory } from "../../../../types/category";
@@ -12,7 +12,6 @@ export default function CategoryManager() {
   const [query, setQuery] = React.useState<Partial<IQueryUser>>({
     page: 1,
     limit: 8,
-    search: "",
   });
   const [categoriesList, setCategoriesList] = React.useState<ICategory[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -139,12 +138,7 @@ export default function CategoryManager() {
     <div className="flex flex-col space-y-5">
       <h1 className="text-2xl font-bold">Category Management</h1>
 
-      <div className="flex justify-between">
-        <BaseSearch
-          value={query.search!}
-          onHandleChange={(value) => setQuery({ ...query, search: value })}
-          onSearch={handleGetCategoriesList}
-        />
+      <div className="flex justify-end">
         <Button
           type="primary"
           onClick={() => handleShowModal()}

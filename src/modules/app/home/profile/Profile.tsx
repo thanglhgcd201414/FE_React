@@ -199,10 +199,10 @@ const ProfilePage = () => {
                   </span>
                 </Flex>
               </Divider>
-
+{/* 
               {
                 !userData?.shippingAddress.length && <Empty description="Không có dữ liệu"/>
-              }
+              } */}
 
               <Form.List name="shippingAddress">
                 {(fields, { add, remove }) => (

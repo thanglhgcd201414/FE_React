@@ -13,8 +13,7 @@ const DEFINE_USER_ROUTERS = {
   home: '/',
   login: '/login',
   register: '/register',
-  aboutUs: '/about-us',
-  contactUs: '/contact-us',
+
   listProduct: '/list-product',
   productDetail: '/product-detail/:id',
   myCart: '/my-cart',

@@ -3,8 +3,8 @@ import {
   BlockOutlined,
   LoginOutlined,
   MobileOutlined,
-  PieChartOutlined,
   ShoppingOutlined,
+  PieChartOutlined
 } from '@ant-design/icons';
 import isChildUrl from '../../../utils/check-active-router';
 import { DEFINE_ROUTERS_ADMIN } from '../../../constants/route-mapper';

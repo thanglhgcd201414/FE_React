@@ -46,77 +46,53 @@ export default function StepOne({formData, setFormData}: IProps) {
             />
           </div>
 
-          {userData?.shippingAddress?.length ? (
-            <div className="ant-form-item flex flex-col gap-2 items-start">
-              <label>Địa chỉ:</label>
-              <Select
-                className='w-full'
-                value={formData.address}
-                onChange={(value) => {
-                  const [street, district, city] = value.split(', ');
-                  setFormData({
-                    ...formData,
-                    address: value,
-                    city,
-                    district,
-                    street,
-                  });
-                }}
-                options={userData.shippingAddress.map((addr, index) => ({
-                  value: `${addr.street}, ${addr.district}, ${addr.city}`,
-                  label: `${addr.street}, ${addr.district}, ${addr.city}`,
-                }))}
+          <div className="flex flex-col gap-4">
+            <div className="ant-form-item">
+              <label>Tỉnh/Thành phố</label>
+              <Input
+                value={formData.city}
+                onChange={(e) =>
+                  setFormData({ ...formData, city: e.target.value })
+                }
               />
             </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <div className="ant-form-item">
-                <label>Tỉnh/Thành phố</label>
-                <Input
-                  value={formData.city}
-                  onChange={(e) =>
-                    setFormData({ ...formData, city: e.target.value })
-                  }
-                />
-              </div>
-              <div className="ant-form-item">
-                <label>Quận/Huyện</label>
-                <Input
-                  value={formData.district}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      district: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="ant-form-item">
-                <label>Phường/Xã</label>
-                <Input
-                  value={formData.ward}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      ward: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="ant-form-item">
-                <label>Tên đường</label>
-                <Input
-                  value={formData.street}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      street: e.target.value,
-                    })
-                  }
-                />
-              </div>
+            <div className="ant-form-item">
+              <label>Quận/Huyện</label>
+              <Input
+                value={formData.district}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    district: e.target.value,
+                  })
+                }
+              />
             </div>
-          )}
+            <div className="ant-form-item">
+              <label>Phường/Xã</label>
+              <Input
+                value={formData.ward}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    ward: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div className="ant-form-item">
+              <label>Tên đường</label>
+              <Input
+                value={formData.street}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    street: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
           <div className="ant-form-item">
             <label>Ghi chú</label>
             <Input.TextArea

@@ -1,6 +1,6 @@
 import { Button, message, Modal, Spin, Table, TableProps } from "antd";
 import * as React from "react";
-import BaseSearch from "../../../../components/base/BaseSearch";
+
 import { IQueryUser } from "../../../../types/user.types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,6 @@ export default function ProductManager() {
   const [query, setQuery] = React.useState<Partial<IQueryUser>>({
     page: 1,
     limit: 5,
-    search: "",
     sort: "DESC",
   });
   const [productsList, setProductsList] = React.useState<IProduct[]>([]);
@@ -159,14 +158,7 @@ export default function ProductManager() {
     <>
       <div className="flex flex-col justify-start items-start space-y-5 w-full">
         <h1 className="font-bold text-2xl">Product Management</h1>
-        <div className="flex flex-row justify-between items-center w-full">
-          <BaseSearch
-            value={query.search!}
-            onHandleChange={(value) => {
-              setQuery({ ...query, search: value });
-            }}
-            onSearch={() => handleGetProductsList()}
-          />
+        <div className="flex flex-row justify-end items-center w-full">
           <Button
             type="primary"
             variant="filled"
