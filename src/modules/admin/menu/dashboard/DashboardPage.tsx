@@ -77,9 +77,7 @@ const DashboardPage = ({
           total: 0,
           quantity: 0,
         };
-        current.total +=
-          item.quantity *
-            item.productId.variants.find((v) => v.sku === item.sku)!.price || 0;
+        current.total += item.quantity * item.productId.price || 0;
         current.quantity += item.quantity;
         productSales.set(product._id, current);
       });
