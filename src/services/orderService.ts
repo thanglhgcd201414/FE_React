@@ -5,8 +5,6 @@ import { IBaseResponse, IBaseResponseList } from "../types/response.types";
 import onRemoveParams from "../utils/on-remove-params";
 
 class OrderService {
-  private _prefixURL = "/order";
-
   /**
    * Tạo đơn hàng mới
    * @param data Dữ liệu đơn hàng (items, paymentMethod, paymentStatus)
@@ -14,7 +12,7 @@ class OrderService {
    */
   public async create(data: Record<string, any>): Promise<IBaseResponse<IOrder>> {
     try {
-      const rs = await axiosRequest.post(this._prefixURL, data);
+      const rs = await axiosRequest.post("/order", data);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -23,7 +21,7 @@ class OrderService {
 
   public async updateOrderStatus(id: string, data: {orderStatus: EOrderStatus}): Promise<IBaseResponse<IOrder>> {
     try {
-      const rs = await axiosRequest.put(`${this._prefixURL}/order-status/${id}`, data);
+      const rs = await axiosRequest.put(`/order/order-status/${id}`, data);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -32,7 +30,7 @@ class OrderService {
 
   public async findOne(id: string): Promise<IBaseResponse<any>> {
     try {
-      const rs = await axiosRequest.get(`${this._prefixURL}/${id}`);
+      const rs = await axiosRequest.get(`/order/${id}`);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -41,7 +39,7 @@ class OrderService {
 
   public async findAll(query: Record<string, any>): Promise<IBaseResponse<IBaseResponseList<IOrder[]>>> {
     try {
-      const rs = await axiosRequest.get(this._prefixURL, {
+      const rs = await axiosRequest.get("/order", {
         params: onRemoveParams(query),
       });
       return Promise.resolve(rs.data);

@@ -72,16 +72,9 @@ export default function LoginAdmin() {
                             className="mb-4"
                             value={form.email}
                             onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                onHandleSubmit();
-                              }
+                              if (e.key === "Enter") { onHandleSubmit(); }
                             }}
-                            onChange={(e) => {
-                              setForm((pre) => ({
-                                ...pre,
-                                email: e.target.value,
-                              }));
-                            }}
+                            onChange={(e) => { setForm((pre) => ({  ...pre, email: e.target.value, })); }}
                           ></Input>
                           <Input.Password
                             type="password"

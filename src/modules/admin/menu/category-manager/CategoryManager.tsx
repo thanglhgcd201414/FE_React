@@ -53,29 +53,12 @@ export default function CategoryManager() {
     });
   };
 
-  const handleShowModal = (category?: ICategory) => {
-    if (category) {
-      categoryService.findOne(category._id).then((res) => {
-        form.setFieldsValue(res.data);
-        setSelectedCategory(res.data);
-      });
-    } else {
-      form.resetFields();
-      setSelectedCategory(null);
-    }
-    setIsModalVisible(true);
-  };
-
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      if (selectedCategory) {
-        await categoryService.update(selectedCategory._id, values);
-        message.success("Category updated successfully");
-      } else {
-        await categoryService.create(values);
-        message.success("Category added successfully");
-      }
+      await categoryService.create(values);
+      message.success("Category added successfully");
+      form.resetFields();
       setIsModalVisible(false);
       handleGetCategoriesList();
     } catch (error: any) {
@@ -115,13 +98,6 @@ export default function CategoryManager() {
       render: (_, record) => (
         <div className="flex justify-center space-x-2">
           <Button
-            icon={<EditOutlined />}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleShowModal(record);
-            }}
-          />
-          <Button
             danger
             icon={<DeleteOutlined />}
             onClick={(e) => {
@@ -141,7 +117,7 @@ export default function CategoryManager() {
       <div className="flex justify-end">
         <Button
           type="primary"
-          onClick={() => handleShowModal()}
+          onClick={() =>setIsModalVisible(true) }
         >
           Add New
         </Button>

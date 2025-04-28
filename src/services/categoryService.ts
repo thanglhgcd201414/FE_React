@@ -4,11 +4,9 @@ import { IBaseResponse, IBaseResponseList } from "../types/response.types";
 import onRemoveParams from "../utils/on-remove-params";
 
 class CategoryService {
-  private _prefixURL = "/category";
-
   public async create(data: Record<string, any>): Promise<IBaseResponse<ICategory>> {
     try {
-      const rs = await axiosRequest.post(this._prefixURL, data);
+      const rs = await axiosRequest.post("/category", data);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -17,7 +15,7 @@ class CategoryService {
 
   public async update(id: string, data: Record<string, any>): Promise<IBaseResponse<ICategory>> {
     try {
-      const rs = await axiosRequest.put(`${this._prefixURL}/${id}`, data);
+      const rs = await axiosRequest.put(`/category/${id}`, data);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -26,7 +24,7 @@ class CategoryService {
 
   public async remove(id: string): Promise<IBaseResponse<any>> {
     try {
-      const rs = await axiosRequest.delete(`${this._prefixURL}/${id}`);
+      const rs = await axiosRequest.delete(`/category/${id}`);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -35,7 +33,7 @@ class CategoryService {
 
   public async findOne(id: string): Promise<IBaseResponse<ICategory>> {
     try {
-      const rs = await axiosRequest.get(`${this._prefixURL}/${id}`);
+      const rs = await axiosRequest.get(`/category/${id}`);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -44,7 +42,7 @@ class CategoryService {
 
   public async findAll(query: Record<string, any>): Promise<IBaseResponse<IBaseResponseList<ICategory[]>>> {
     try {
-      const rs = await axiosRequest.get(this._prefixURL, {
+      const rs = await axiosRequest.get("/category", {
         params: onRemoveParams(query),
       });
       return Promise.resolve(rs.data);

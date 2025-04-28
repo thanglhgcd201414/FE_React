@@ -2,8 +2,6 @@ import axiosRequest from "../plugins/request";
 import { ICart } from "../types/cart.types";
 import { IBaseResponse,  } from "../types/response.types";
 class CartService {
-  private _prefixURL = "/cart";
-
   /**
    * Thêm sản phẩm vào giỏ hàng
    * @param id ID của giỏ hàng
@@ -12,9 +10,7 @@ class CartService {
    */
   public async addItemToCart(id: string, data: Record<string, any>): Promise<IBaseResponse<ICart>> {
     try {
-      console.log(`Adding item to cart: ${this._prefixURL}/${id}`, data);
-      const rs = await axiosRequest.post(`${this._prefixURL}/${id}`, data);
-      console.log('Add to cart response:', rs.data);
+      const rs = await axiosRequest.post(`/cart/${id}`, data);
       return Promise.resolve(rs.data);
     } catch (error) {
       console.error('Add to cart error:', error);
@@ -24,7 +20,7 @@ class CartService {
 
   public async update(id: string, data: Record<string, any>): Promise<IBaseResponse<ICart>> {
     try {
-      const rs = await axiosRequest.put(`${this._prefixURL}/${id}`, data);
+      const rs = await axiosRequest.put(`/cart/${id}`, data);
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);
@@ -33,7 +29,7 @@ class CartService {
 
   public async find(): Promise<IBaseResponse<ICart>> {
     try {
-      const rs = await axiosRequest.get(this._prefixURL);
+      const rs = await axiosRequest.get("/cart");
       return Promise.resolve(rs.data);
     } catch (error) {
       return Promise.reject(error);

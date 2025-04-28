@@ -10,13 +10,12 @@
 import axios, { AxiosResponse } from "axios";
 import cookiesStore from "./cookiesStore";
 import showError from "../utils/showError";
-import { DEFINE_USER_ROUTERS } from "../constants/route-mapper";
-// URL cơ sở và tiền tố API từ biến môi trường
+
 export const API_URL: string | undefined = import.meta.env.VITE_BASE_URL;
-const API_PREFIX: string | undefined = import.meta.env.VITE_BASE_PREFIX;
 
 const axiosRequest = axios.create({
-  baseURL: `${API_URL}/${API_PREFIX}`, // URL đầy đủ cho API
+  baseURL: `http://localhost:8080/api/v1`, // URL đầy đủ cho API
+  // baseURL: `${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_BASE_PREFIX}`, // URL đầy đủ cho API
   withCredentials: false, // Không gửi cookie trong các yêu cầu cross-origin
 });
 
@@ -58,7 +57,6 @@ const onRejectResponse = (error: any) => {
     if (status === 401 || status === 403) {
       cookiesStore.remove("access_token"); // Xóa token
       axiosRequest.defaults.headers.common["Authorization"] = ""; // Xóa header Authorization
-      // location.href = DEFINE_USER_ROUTERS.login; // Chuyển hướng đến trang đăng nhập (hiện đã bị comment)
     }
 
     // Nếu là lỗi server (500+) hoặc không có phản hồi

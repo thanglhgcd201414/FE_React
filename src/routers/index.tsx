@@ -85,14 +85,6 @@ const router = createBrowserRouter([
         path: DEFINE_USER_ROUTERS.myCart,
         element: <Cart />,
       },
-      // {
-      //   path: DEFINE_USER_ROUTERS.aboutUs,
-      //   element: <AboutUs />,
-      // },
-      // {
-      //   path: DEFINE_USER_ROUTERS.contactUs,
-      //   element: <ContactUs />,
-      // },
       {
         path: DEFINE_USER_ROUTERS.paymentSuccess,
         element: <PaymentSuccess />,

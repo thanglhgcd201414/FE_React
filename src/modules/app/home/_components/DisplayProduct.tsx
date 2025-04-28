@@ -18,7 +18,6 @@ interface IProps {
 export default function DisplayProduct({ product }: IProps) {
   const navigate = useNavigate();
   const { userData } = useAppSelector((state: IRootState) => state.user);
-  // Không còn sử dụng variants và favoriteProducts
   const isFavorite = false; // Đã loại bỏ tính năng yêu thích
 
   return (
@@ -27,7 +26,6 @@ export default function DisplayProduct({ product }: IProps) {
       cover={
         <div className="relative">
           <ImageHover
-            alt={product.name}
             src={buildImageUrl(product.images[0])}
             className="object-cover !h-[280px]"
           />

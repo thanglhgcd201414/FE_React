@@ -27,22 +27,6 @@ export default function ListProduct() {
   const [categories, setCategories] = React.useState<ICategory[]>([]);
   const [loading, setLoading] = React.useState(false);
 
-  const handleGetProductsList = async () => {
-    try {
-      setLoading(true);
-      
-      const rs = await productService.findAll(query);
-      setProductsList(rs.data.content);
-      setQuery((prev) => ({ ...prev, total: rs.data.metaData.totalItem }));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCategoryChange = (checkedValues: any) => {
-    setQuery((prev) => ({ ...prev, categoryIds: checkedValues, page: 1 }));
-  };
-
   React.useEffect(() => {
     handleGetProductsList();
   }, [
@@ -58,6 +42,25 @@ export default function ListProduct() {
     };
     fetchCategories();
   }, []);
+
+
+  
+  const handleGetProductsList = async () => {
+    try {
+      setLoading(true);
+      
+      const response = await productService.findAll(query);
+      setProductsList(response.data.content);
+      setQuery((prev) => ({ ...prev, total: response.data.metaData.totalItem }));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCategoryChange = (checkedValues: any) => {
+    setQuery((prev) => ({ ...prev, categoryIds: checkedValues, page: 1 }));
+  };
+
 
   return (
     <div className="container mx-auto p-4 flex gap-6">
