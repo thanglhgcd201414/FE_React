@@ -2,9 +2,7 @@ import {
   Button,
   Form,
   Input,
-  Upload,
   message,
-  Avatar,
   Card,
   Row,
   Col,
@@ -20,8 +18,7 @@ import {
 import { useForm } from 'antd/es/form/Form';
 import { useState, useEffect } from 'react';
 import { IUser } from '../../../../types/user.types';
-import { profileService, uploadService } from '../../../../services';
-import buildImageUrl from '../../../../utils/build-image-url';
+import { profileService } from '../../../../services';
 import { setUser } from '../../../../lib/reducer/userSlice';
 import { useDispatch } from 'react-redux';
 
@@ -66,21 +63,6 @@ const ProfilePage = () => {
     }
   };
 
-  const handleUpload = async (options: any) => {
-    if (userData?.avatar) {
-      await uploadService.deleteImages([userData.avatar]);
-    }
-    const { file } = options;
-    const formData = new FormData();
-    formData.append('image', file);
-    try {
-      const response = await uploadService.uploadImage(formData);
-      setAvatarUrl(response.data);
-      message.success('Upload ảnh thành công!');
-    } catch (error) {
-      message.error('Upload ảnh thất bại!');
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -112,34 +94,6 @@ const ProfilePage = () => {
           initialValues={userData || {}}
         >
           <Row gutter={24}>
-            <Col span={24} className="text-center mb-8">
-              <Upload
-                accept="image/*"
-                showUploadList={false}
-                customRequest={handleUpload}
-                disabled={!editMode}
-              >
-                <Avatar
-                  src={buildImageUrl(avatarUrl ?? '')}
-                  icon={<UserOutlined />}
-                  size={120}
-                  className="mb-4 border-2 border-gray-200 hover:border-blue-500 transition-all"
-                  style={{ backgroundColor: '#f0f2f5' }}
-                />
-                {editMode && (
-                  <div className="mt-2">
-                    <Button
-                      icon={<UploadOutlined />}
-                      type="dashed"
-                      className="text-blue-600"
-                    >
-                      Đổi ảnh đại diện
-                    </Button>
-                  </div>
-                )}
-              </Upload>
-            </Col>
-
             <Col span={12}>
               <Form.Item
                 label={<span className="font-medium">Họ và Tên</span>}
