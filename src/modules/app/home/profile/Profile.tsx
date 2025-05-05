@@ -10,7 +10,6 @@ import {
 } from 'antd';
 import {
   UserOutlined,
-  UploadOutlined,
   EditOutlined,
   MailOutlined,
   PhoneOutlined,
@@ -19,16 +18,14 @@ import { useForm } from 'antd/es/form/Form';
 import { useState, useEffect } from 'react';
 import { IUser } from '../../../../types/user.types';
 import { profileService } from '../../../../services';
-import { setUser } from '../../../../lib/reducer/userSlice';
-import { useDispatch } from 'react-redux';
+import { setUserData } from '../../../../utils/localStorage';
 
 const ProfilePage = () => {
   const [form] = useForm();
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<IUser | null>(null);
+  const [userData, setUserDataState] = useState<IUser | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string>();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchUserData();
@@ -37,7 +34,7 @@ const ProfilePage = () => {
   const fetchUserData = async () => {
     try {
       const response = await profileService.getProfile();
-      setUserData(response.data);
+      setUserDataState(response.data);
       form.setFieldsValue(response.data);
       setAvatarUrl(response.data.avatar);
     } catch (error) {
@@ -52,8 +49,8 @@ const ProfilePage = () => {
         ...values,
         avatar: avatarUrl,
       });
+      setUserDataState(updatedUser.data);
       setUserData(updatedUser.data);
-      dispatch(setUser(updatedUser.data));
       setEditMode(false);
       message.success('Cập nhật hồ sơ thành công');
     } catch (error) {

@@ -18,14 +18,15 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { cartService, productService } from '../../../../services';
 import buildImageUrl from '../../../../utils/build-image-url';
-import { useAppState } from '../../../../hooks/useLocalStorage';
+import { getUserData, getCartData, setCartData } from '../../../../utils/localStorage';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  const { userData, cartInfo, setCartInfo } = useAppState();
+  const [userData] = useState(getUserData());
+  const [cartInfo] = useState(getCartData());
 
 
   useEffect(() => {
@@ -73,7 +74,7 @@ export default function ProductDetail() {
         quantity: 1
       });
 
-      setCartInfo(rs.data)
+      setCartData(rs.data)
 
       message.success('Đã thêm vào giỏ hàng');
     } catch (error) {

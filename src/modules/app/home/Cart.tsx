@@ -7,13 +7,12 @@ import { cartService } from '../../../services';
 import buildImageUrl from '../../../utils/build-image-url';
 import { useNavigate } from 'react-router-dom';
 import { DEFINE_USER_ROUTERS } from '../../../constants/route-mapper';
-import { useAppState } from '../../../hooks/useLocalStorage';
+import { setCartData } from '../../../utils/localStorage';
 
 const Cart = () => {
   const [cart, setCart] = useState<ICart | null>(null);
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const { setCartInfo } = useAppState();
   const navigate = useNavigate();
 
   const loadCart = async () => {
@@ -42,7 +41,7 @@ const Cart = () => {
         }))
       });
       setCart(data);
-      setCartInfo(data);
+      setCartData(data);
     } finally {
       setUpdating(false);
     }
@@ -61,7 +60,7 @@ const Cart = () => {
         }))
       });
       setCart(data);
-      setCartInfo(data);
+      setCartData(data);
     } finally {
       setUpdating(false);
     }

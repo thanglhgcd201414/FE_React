@@ -17,12 +17,12 @@ import StepThree from './StepThree';
 import StepTwo from './StepTwo';
 import { formatCurrency } from '../../../../utils/format-money';
 import PayPalPayment from '../../../../components/payment/PayPalPayment';
-import { useAppState } from '../../../../hooks/useLocalStorage';
+import { getUserData, clearCart } from '../../../../utils/localStorage';
 
 const { Step } = Steps;
 
 const CheckoutPage = () => {
-  const { userData, clearCart } = useAppState();
+  const [userData] = useState(getUserData());
   const [cart, setCart] = useState<ICart | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);

@@ -11,11 +11,12 @@ import Logo from '../icons/Logo';
 import cookiesStore from '../../plugins/cookiesStore';
 import { DEFINE_USER_ROUTERS } from '../../constants/route-mapper';
 import { cartService } from '../../services';
-import { useAppState } from '../../hooks/useLocalStorage';
+import { getUserData, setCartData, logout, getCartItemCount } from '../../utils/localStorage';
 import buildImageUrl from '../../utils/build-image-url';
 
 export default function TheHeader() {
-  const { userData, setUserData, cartInfo, setCartInfo, cartItemCount, logout } = useAppState();
+  const [userData, setUserDataState] = useState(getUserData());
+  const [cartItemCount, setCartItemCount] = useState(getCartItemCount());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleGetCart = async () => {
@@ -24,7 +25,8 @@ export default function TheHeader() {
       console.log("Fetching cart for user:", userData._id);
       const rs = await cartService.find();
       console.log("Cart data received:", rs.data);
-      setCartInfo(rs.data);
+      setCartData(rs.data);
+      setCartItemCount(rs.data.items?.length || 0);
     } catch (error) {
       console.error("Error fetching cart:", error);
       // setUserData(undefined);
@@ -42,6 +44,8 @@ export default function TheHeader() {
     cookiesStore.remove('admin');
     cookiesStore.remove('access_token');
     logout();
+    setUserDataState(undefined);
+    setCartItemCount(0);
   };
 
   const menuItems: MenuProps['items'] = [
@@ -70,8 +74,6 @@ export default function TheHeader() {
   const navLinks = [
     { to: DEFINE_USER_ROUTERS.home, label: 'Trang chủ' },
     { to: DEFINE_USER_ROUTERS.listProduct, label: 'Sản phẩm' },
-    // { to: DEFINE_USER_ROUTERS.aboutUs, label: 'Về chúng tôi' },
-    // { to: DEFINE_USER_ROUTERS.contactUs, label: 'Liên hệ' },
   ];
 
   return (

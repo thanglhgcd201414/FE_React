@@ -7,11 +7,10 @@ import cookiesStore from '../../../plugins/cookiesStore';
 import authService from '../../../services/authService';
 import Logo from '../../../components/icons/Logo';
 import { DEFINE_USER_ROUTERS } from '../../../constants/route-mapper';
-import { useAppState } from '../../../hooks/useLocalStorage';
+import { setUserData } from '../../../utils/localStorage';
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const { setUserData } = useAppState();
   const navigate = useNavigate();
 
   const onFinish = async (values: { email: string, password: string }) => {

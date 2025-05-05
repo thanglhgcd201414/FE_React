@@ -1,6 +1,7 @@
 import { Card, Input } from 'antd';
 import { motion } from 'framer-motion';
-import { useAppState } from '../../../../hooks/useLocalStorage';
+import { useState } from 'react';
+import { getUserData } from '../../../../utils/localStorage';
 
 interface IProps {
   formData: any;
@@ -8,7 +9,7 @@ interface IProps {
 }
 
 export default function StepOne({formData, setFormData}: IProps) {
-  const { userData } = useAppState();
+  const [userData] = useState(getUserData());
 
   return (
     <motion.div
