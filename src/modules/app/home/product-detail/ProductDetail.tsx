@@ -38,7 +38,7 @@ export default function ProductDetail() {
       try {
         if (id) {
           const response = await productService.findOne(id);
-          const {productDetail: productData} = response.data;
+          const productData = response.data.productDetail;
           setProduct(productData);
         }
       } catch (error) {
@@ -150,7 +150,7 @@ export default function ProductDetail() {
           </Swiper>
 
           <Swiper
-            onSwiper={setThumbsSwiper}
+            // onSwiper={setThumbsSwiper}
             spaceBetween={10}
             slidesPerView={4}
             watchSlidesProgress
@@ -183,7 +183,6 @@ export default function ProductDetail() {
               </span>
             </div>
 
-            {/* Đã loại bỏ thông tin giao hàng */}
 
             <div className="flex gap-4 mt-6">
               <Button

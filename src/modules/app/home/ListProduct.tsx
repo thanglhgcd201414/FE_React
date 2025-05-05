@@ -82,6 +82,7 @@ export default function ListProduct() {
                 transition={{ delay: index * 0.05 }}
               >
                 <DisplayProduct product={product} />
+                
               </motion.div>
             ))}
           </motion.div>

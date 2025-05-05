@@ -18,7 +18,7 @@ interface IProps {
 export default function DisplayProduct({ product }: IProps) {
   const navigate = useNavigate();
   const { userData } = useAppSelector((state: IRootState) => state.user);
-  const isFavorite = false; // Đã loại bỏ tính năng yêu thích
+  const isFavorite = false;
 
   return (
     <Card
@@ -28,23 +28,7 @@ export default function DisplayProduct({ product }: IProps) {
           <ImageHover
             src={buildImageUrl(product.images[0])}
             className="object-cover !h-[280px]"
-          />
-          <div className="absolute top-3 right-3 z-10">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-                {isFavorite ? (
-                  <HeartFilled
-                    className="text-2xl text-red-500 cursor-pointer hover:text-red-600 transition-colors"
-                  />
-                ) : (
-                  <HeartOutlined
-                    className="text-2xl text-gray-400 cursor-pointer hover:text-red-500 transition-colors"
-                  />
-                )}
-            </motion.div>
-          </div>
+          /> 
         </div>
       }
       className="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group"

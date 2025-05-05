@@ -157,21 +157,6 @@ const DashboardPage = ({
           </Card>
         </Col>
 
-        <Col span={8}>
-          <Card className="shadow-lg hover:shadow-xl transition-shadow">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-purple-100 rounded-full">
-                <RocketOutlined className="text-2xl text-purple-500" />
-              </div>
-              <div>
-                <h3 className="text-gray-500">Sản phẩm bán chạy</h3>
-                <p className="text-2xl font-bold">
-                  {topProducts[0]?.product.name || '-'}
-                </p>
-              </div>
-            </div>
-          </Card>
-        </Col>
       </Row>
 
       <Card
@@ -206,82 +191,7 @@ const DashboardPage = ({
           </LineChart>
         </ResponsiveContainer>
       </Card>
-
-      <Card
-        title={
-          <div className="flex items-center gap-2">
-            <RocketOutlined className="text-red-500" />
-            Top sản phẩm bán chạy
-          </div>
-        }
-        className="shadow-lg"
-      >
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={topProducts}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="product.name" />
-            <YAxis />
-            <Tooltip
-              formatter={(value, name) => [
-                name === 'total' ? formatCurrency(value as number) : value,
-                name === 'total' ? 'Doanh thu' : 'Số lượng',
-              ]}
-            />
-            <Legend />
-            <Bar dataKey="quantity" fill="#3b82f6" name="Số lượng bán" />
-            <Bar dataKey="total" fill="#10b981" name="Tổng doanh thu" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Card>
-
-      <Card
-        title={
-          <div className="flex items-center gap-2">
-            <ShoppingOutlined className="text-green-500" />
-            Chi tiết sản phẩm bán chạy
-          </div>
-        }
-        className="shadow-lg"
-      >
-        <Table
-          columns={[
-            {
-              title: 'Sản phẩm',
-              dataIndex: ['product', 'name'],
-              render: (text, record) => (
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={buildImageUrl(record.product.images[0])}
-                    width={60}
-                    height={60}
-                    className="rounded-lg object-contain"
-                    preview={false}
-                  />
-                  <span className="font-medium">{text}</span>
-                </div>
-              ),
-            },
-            {
-              title: 'Doanh thu',
-              dataIndex: 'total',
-              render: (value) => formatCurrency(value),
-              sorter: (a, b) => a.total - b.total,
-            },
-            {
-              title: 'Số lượng bán',
-              dataIndex: 'quantity',
-              sorter: (a, b) => a.quantity - b.quantity,
-            },
-            {
-              title: 'Đánh giá',
-              dataIndex: ['product', 'ratingAverage'],
-              render: (value) => value?.toFixed(1) || 'Chưa có',
-            },
-          ]}
-          dataSource={topProducts}
-          rowKey={(record) => record.product._id}
-        />
-      </Card>
+ 
     </div>
   );
 };
