@@ -1,7 +1,6 @@
-import { Card, Input, Select } from 'antd';
+import { Card, Input } from 'antd';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
-import { IRootState } from '../../../../lib/store';
+import { useAppState } from '../../../../hooks/useLocalStorage';
 
 interface IProps {
   formData: any;
@@ -9,7 +8,7 @@ interface IProps {
 }
 
 export default function StepOne({formData, setFormData}: IProps) {
-  const { userData } = useSelector((state: IRootState) => state.user);
+  const { userData } = useAppState();
 
   return (
     <motion.div

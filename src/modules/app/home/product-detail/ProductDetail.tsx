@@ -17,20 +17,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { cartService, productService } from '../../../../services';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../../../lib/store';
-import { addCartInfo } from '../../../../lib/reducer/cartSlice';
 import buildImageUrl from '../../../../utils/build-image-url';
+import { useAppState } from '../../../../hooks/useLocalStorage';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  const dispatch = useDispatch();
-  const { cartInfo } = useSelector((state: IRootState) => state.cart);
-  const { userData } = useSelector((state: IRootState) => state.user);
-
+  const { userData, cartInfo, setCartInfo } = useAppState();
 
 
   useEffect(() => {
@@ -78,7 +73,7 @@ export default function ProductDetail() {
         quantity: 1
       });
 
-      dispatch(addCartInfo(rs.data))
+      setCartInfo(rs.data)
 
       message.success('Đã thêm vào giỏ hàng');
     } catch (error) {

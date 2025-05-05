@@ -8,8 +8,6 @@ import {
   ShoppingCartOutlined,
 } from '@ant-design/icons';
 import buildImageUrl from '../../../../utils/build-image-url';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../../../lib/store';
 import { cartService, orderService } from '../../../../services';
 import { ICart } from '../../../../types/cart.types';
 import { EPaymentMethod, EPaymentStatus } from '../../../../constants/order-status';
@@ -17,14 +15,14 @@ import GeneralLoading from '../../../../components/base/GeneralLoading';
 import StepOne from './StepOne';
 import StepThree from './StepThree';
 import StepTwo from './StepTwo';
-import { clearCart } from '../../../../lib/reducer/cartSlice';
 import { formatCurrency } from '../../../../utils/format-money';
 import PayPalPayment from '../../../../components/payment/PayPalPayment';
+import { useAppState } from '../../../../hooks/useLocalStorage';
 
 const { Step } = Steps;
 
 const CheckoutPage = () => {
-  const { userData } = useSelector((state: IRootState) => state.user);
+  const { userData, clearCart } = useAppState();
   const [cart, setCart] = useState<ICart | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -35,8 +33,6 @@ const CheckoutPage = () => {
   const [isConfirmedTerm, setIsConfirmedTerm] = useState<boolean>(false);
   const [isPayPalModalVisible, setIsPayPalModalVisible] = useState<boolean>(false);
   const [orderData, setOrderData] = useState<any>(null);
-  // Removed unused ref
-  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -171,7 +167,7 @@ const CheckoutPage = () => {
       // Cập nhật UI và xóa giỏ hàng
       setCurrentStep(2);
       message.success('Thanh toán thành công và đơn hàng đã được tạo');
-      dispatch(clearCart());
+      clearCart();
     } catch (error) {
       console.error('PayPal Payment Error:', error);
       message.error('Có lỗi xảy ra trong quá trình thanh toán: ' + (error instanceof Error ? error.message : 'Unknown error'));

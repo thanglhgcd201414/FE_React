@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
   ShoppingCartOutlined,
@@ -9,25 +8,15 @@ import {
 import { Badge, Dropdown, Space, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
 import Logo from '../icons/Logo';
-import { IRootState } from '../../lib/store';
 import cookiesStore from '../../plugins/cookiesStore';
 import { DEFINE_USER_ROUTERS } from '../../constants/route-mapper';
 import { cartService } from '../../services';
-import { setUser } from '../../lib/reducer/userSlice';
-import {
-  addCartInfo,
-  clearCart,
-  selectCartItemCount,
-} from '../../lib/reducer/cartSlice';
-import { useAppSelector } from '../../hooks/app.hook';
+import { useAppState } from '../../hooks/useLocalStorage';
 import buildImageUrl from '../../utils/build-image-url';
 
 export default function TheHeader() {
-  const { userData } = useSelector((state: IRootState) => state.user);
-  const itemCount = useAppSelector(selectCartItemCount);
+  const { userData, setUserData, cartInfo, setCartInfo, cartItemCount, logout } = useAppState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const dispatch = useDispatch();
 
   const handleGetCart = async () => {
     try {
@@ -35,10 +24,10 @@ export default function TheHeader() {
       console.log("Fetching cart for user:", userData._id);
       const rs = await cartService.find();
       console.log("Cart data received:", rs.data);
-      dispatch(addCartInfo(rs.data));
+      setCartInfo(rs.data);
     } catch (error) {
       console.error("Error fetching cart:", error);
-      // dispatch(setUser(undefined));
+      // setUserData(undefined);
     }
   };
 
@@ -52,8 +41,7 @@ export default function TheHeader() {
   const handleLogout = () => {
     cookiesStore.remove('admin');
     cookiesStore.remove('access_token');
-    dispatch(setUser(undefined));
-    dispatch(clearCart());
+    logout();
   };
 
   const menuItems: MenuProps['items'] = [
@@ -123,7 +111,7 @@ export default function TheHeader() {
               to={DEFINE_USER_ROUTERS.myCart}
               className="flex items-center gap-1 text-gray-700 transition-colors hover:text-primary"
             >
-              <Badge count={itemCount} className="flex items-center">
+              <Badge count={cartItemCount} className="flex items-center">
                 <ShoppingCartOutlined className="text-2xl" />
               </Badge>
             </NavLink>

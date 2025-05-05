@@ -1,17 +1,17 @@
 // src/pages/LoginPage.tsx
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Form, Input, message, Spin } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { setUser } from '../../../lib/reducer/userSlice';
 import cookiesStore from '../../../plugins/cookiesStore';
 import authService from '../../../services/authService';
 import Logo from '../../../components/icons/Logo';
 import { DEFINE_USER_ROUTERS } from '../../../constants/route-mapper';
+import { useAppState } from '../../../hooks/useLocalStorage';
+
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const { setUserData } = useAppState();
   const navigate = useNavigate();
 
   const onFinish = async (values: { email: string, password: string }) => {
@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
       const response = await authService.login(values);
 
       if (response.data) {
-        dispatch(setUser(response.data.user));
+        setUserData(response.data.user);
 
         cookiesStore.set('access_token', response.data.accessToken);
 

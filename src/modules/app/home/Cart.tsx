@@ -4,17 +4,16 @@ import { Spin, InputNumber, Divider, Empty, Tag } from 'antd';
 import { DeleteOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { ICart } from '../../../types/cart.types';
 import { cartService } from '../../../services';
-import { useDispatch } from 'react-redux';
-import { addCartInfo } from '../../../lib/reducer/cartSlice';
 import buildImageUrl from '../../../utils/build-image-url';
 import { useNavigate } from 'react-router-dom';
 import { DEFINE_USER_ROUTERS } from '../../../constants/route-mapper';
+import { useAppState } from '../../../hooks/useLocalStorage';
 
 const Cart = () => {
   const [cart, setCart] = useState<ICart | null>(null);
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const dispatch = useDispatch();
+  const { setCartInfo } = useAppState();
   const navigate = useNavigate();
 
   const loadCart = async () => {
@@ -43,7 +42,7 @@ const Cart = () => {
         }))
       });
       setCart(data);
-      dispatch(addCartInfo(data));
+      setCartInfo(data);
     } finally {
       setUpdating(false);
     }
@@ -62,7 +61,7 @@ const Cart = () => {
         }))
       });
       setCart(data);
-      dispatch(addCartInfo(data))
+      setCartInfo(data);
     } finally {
       setUpdating(false);
     }

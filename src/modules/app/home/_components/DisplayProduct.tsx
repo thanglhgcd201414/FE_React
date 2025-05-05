@@ -1,13 +1,9 @@
-import { motion } from 'framer-motion';
 import { IProduct } from '../../../../types/product.types';
 import { Card } from 'antd';
 import ImageHover from '../../../../components/base/ImageHover';
 import buildImageUrl from '../../../../utils/build-image-url';
 import { DEFINE_USER_ROUTERS } from '../../../../constants/route-mapper';
 import { useNavigate } from 'react-router-dom';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { useAppSelector } from '../../../../hooks/app.hook';
-import { IRootState } from '../../../../lib/store';
 
 const { Meta } = Card;
 
@@ -17,8 +13,6 @@ interface IProps {
 
 export default function DisplayProduct({ product }: IProps) {
   const navigate = useNavigate();
-  const { userData } = useAppSelector((state: IRootState) => state.user);
-  const isFavorite = false;
 
   return (
     <Card
@@ -28,7 +22,7 @@ export default function DisplayProduct({ product }: IProps) {
           <ImageHover
             src={buildImageUrl(product.images[0])}
             className="object-cover !h-[280px]"
-          /> 
+          />
         </div>
       }
       className="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group"
