@@ -40,6 +40,7 @@ class ProductService {
     }
   }
 
+  // ================ query dưới được truyền vào từ component
   public async findAll(query: Record<string, any>): Promise<IBaseResponse<IBaseResponseList<IProduct[]>>> {
     try {
       const rs = await axiosRequest.get("/products", {

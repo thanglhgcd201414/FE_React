@@ -117,6 +117,7 @@ const Cart = () => {
                     key={item._id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
+
                     exit={{ opacity: 0, x: 20 }}
                     className="group flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100"
                   >

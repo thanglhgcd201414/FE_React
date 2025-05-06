@@ -62,13 +62,6 @@ export default function ProductDetail() {
     }
 
     try {
-      console.log("Adding to cart:", {
-        cartId: cartInfo._id,
-        productId: product!._id,
-        quantity: 1
-      });
-
-      // Trong schema mới, chúng ta chỉ cần truyền productId và quantity
       const rs = await cartService.addItemToCart(cartInfo._id, {
         productId: product!._id,
         quantity: 1

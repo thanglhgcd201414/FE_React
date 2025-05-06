@@ -29,6 +29,7 @@ class CartService {
 
   public async find(): Promise<IBaseResponse<ICart>> {
     try {
+       // đi vào axiosrequest trước để lấy .... xong , đi tiếp ở đây qua BE
       const rs = await axiosRequest.get("/cart");
       return Promise.resolve(rs.data);
     } catch (error) {

@@ -1,10 +1,10 @@
-import cookiesStore from "../../../plugins/cookiesStore";
 import { Navigate, Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
 import { DEFINE_ROUTERS_ADMIN } from "../../../constants/route-mapper";
+import { isAdmin } from "../../../utils/localStorage";
 
 export default function TheLayoutAdmin() {
-  const admin = cookiesStore.get("admin");
+  const admin = isAdmin();
 
   if (!admin) {
     return (

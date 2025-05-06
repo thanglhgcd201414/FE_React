@@ -1,6 +1,6 @@
 /**
  * Các hàm tiện ích để quản lý trạng thái ứng dụng WinMobile sử dụng localStorage
- * 
+ *
  * File này cung cấp các hàm để thao tác trực tiếp với localStorage thay vì sử dụng Redux
  */
 import { ICart } from '../types/cart.types';
@@ -10,6 +10,8 @@ import { IUser } from '../types/user.types';
 const STORAGE_KEYS = {
   USER: 'winmobile_user',
   CART: 'winmobile_cart',
+  TOKEN: 'winmobile_token',
+  ADMIN: 'winmobile_admin',
 };
 
 /**
@@ -84,12 +86,72 @@ export const clearCart = (): void => {
 };
 
 /**
- * Đăng xuất: xóa tất cả dữ liệu người dùng và giỏ hàng
+ * Lưu token xác thực vào localStorage
+ * @param token Token xác thực cần lưu
+ */
+export const setToken = (token: string | undefined): void => {
+  try {
+    if (token) {
+      localStorage.setItem(STORAGE_KEYS.TOKEN, token);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.TOKEN);
+    }
+  } catch (error) {
+    console.error('Lỗi khi lưu token vào localStorage:', error);
+  }
+};
+
+/**
+ * Lấy token xác thực từ localStorage
+ * @returns Token xác thực hoặc undefined nếu không có
+ */
+export const getToken = (): string | undefined => {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.TOKEN) || undefined;
+  } catch (error) {
+    console.error('Lỗi khi đọc token từ localStorage:', error);
+    return undefined;
+  }
+};
+
+/**
+ * Đánh dấu người dùng là admin
+ * @param isAdmin true nếu người dùng là admin, false nếu không phải
+ */
+export const setAdmin = (isAdmin: boolean): void => {
+  try {
+    if (isAdmin) {
+      localStorage.setItem(STORAGE_KEYS.ADMIN, 'admin');
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.ADMIN);
+    }
+  } catch (error) {
+    console.error('Lỗi khi lưu trạng thái admin vào localStorage:', error);
+  }
+};
+
+/**
+ * Kiểm tra người dùng có phải là admin không
+ * @returns true nếu người dùng là admin, false nếu không phải
+ */
+export const isAdmin = (): boolean => {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.ADMIN) === 'admin';
+  } catch (error) {
+    console.error('Lỗi khi đọc trạng thái admin từ localStorage:', error);
+    return false;
+  }
+};
+
+/**
+ * Đăng xuất: xóa tất cả dữ liệu người dùng, giỏ hàng và token
  */
 export const logout = (): void => {
   try {
     localStorage.removeItem(STORAGE_KEYS.USER);
     localStorage.removeItem(STORAGE_KEYS.CART);
+    localStorage.removeItem(STORAGE_KEYS.TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.ADMIN);
   } catch (error) {
     console.error('Lỗi khi đăng xuất và xóa dữ liệu từ localStorage:', error);
   }

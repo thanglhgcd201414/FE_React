@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import isChildUrl from '../../../utils/check-active-router';
 import { DEFINE_ROUTERS_ADMIN } from '../../../constants/route-mapper';
-import cookiesStore from '../../../plugins/cookiesStore';
+import { logout } from '../../../utils/localStorage';
 import { Divider } from 'antd';
 
 const Sidebar = () => {
@@ -38,8 +38,7 @@ const Sidebar = () => {
   ];
 
   const handleLogOut = () => {
-    cookiesStore.remove('admin');
-    cookiesStore.remove('access_token');
+    logout();
     window.location.href = DEFINE_ROUTERS_ADMIN.homeAdmin;
   };
 

@@ -18,6 +18,7 @@ const RegisterPage: React.FC = () => {
   }) => {
     try {
       setLoading(true);
+      // đi vào file services và đi đến function phía sau services này
       await authService.register({
         email: values.email,
         password: values.password,

@@ -8,7 +8,6 @@ import {
 import { Badge, Dropdown, Space, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
 import Logo from '../icons/Logo';
-import cookiesStore from '../../plugins/cookiesStore';
 import { DEFINE_USER_ROUTERS } from '../../constants/route-mapper';
 import { cartService } from '../../services';
 import { getUserData, setCartData, logout, getCartItemCount } from '../../utils/localStorage';
@@ -41,8 +40,6 @@ export default function TheHeader() {
   }, [userData]);
 
   const handleLogout = () => {
-    cookiesStore.remove('admin');
-    cookiesStore.remove('access_token');
     logout();
     setUserDataState(undefined);
     setCartItemCount(0);

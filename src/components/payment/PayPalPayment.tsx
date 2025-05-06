@@ -27,11 +27,13 @@ const PayPalPayment = ({ amount, onSuccess }: PayPalPaymentProps) => {
         }}
         forceReRender={[amount]}
         fundingSource={undefined}
+      
+      
+        //tạo bill thanh toán 
         createOrder={(_data, actions) => {
-          // Đảm bảo amount là số dương và được định dạng đúng
           const amountValue = Math.max(0.01, amount).toFixed(2);
           console.log("Creating PayPal order with amount:", amountValue);
-
+        //call api tạo bill thanh toán 
           return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [
@@ -45,9 +47,12 @@ const PayPalPayment = ({ amount, onSuccess }: PayPalPaymentProps) => {
             ],
           });
         }}
+
+// xac minh thanh toan (comeplete purchase)
         onApprove={async (_data, actions) => {
           if (actions.order) {
             try {
+              //call api xac minh thanh toan
               const details = await actions.order.capture();
               console.log("PayPal capture successful:", details);
 
@@ -59,6 +64,7 @@ const PayPalPayment = ({ amount, onSuccess }: PayPalPaymentProps) => {
               }
 
               onSuccess(details);
+              message.success("Thanh toán PayPal thành công");
             } catch (error) {
               console.error("PayPal Capture Error:", error);
               message.error("Có lỗi xảy ra trong quá trình thanh toán PayPal");

@@ -1,11 +1,11 @@
 import { Input, message } from "antd";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import cookiesStore from "../../../plugins/cookiesStore";
 import GeneralLoading from "../../../components/base/GeneralLoading";
 import { DEFINE_ROUTERS_ADMIN } from "../../../constants/route-mapper";
 import authService from "../../../services/authService";
 import Logo from "../../../components/icons/Logo";
+import { setToken, setAdmin } from "../../../utils/localStorage";
 
 export default function LoginAdmin() {
   const [form, setForm] = React.useState({
@@ -26,8 +26,8 @@ export default function LoginAdmin() {
         email: form.email,
         password: form.password,
       });
-      cookiesStore.set("access_token", rs.data.accessToken);
-      cookiesStore.set("admin", "admin");
+      setToken(rs.data.accessToken);
+      setAdmin(true);
       navigate(DEFINE_ROUTERS_ADMIN.homeAdmin);
     } finally {
       setLoading(false);

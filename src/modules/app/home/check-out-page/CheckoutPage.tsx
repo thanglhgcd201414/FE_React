@@ -17,7 +17,7 @@ import StepThree from './StepThree';
 import StepTwo from './StepTwo';
 import { formatCurrency } from '../../../../utils/format-money';
 import PayPalPayment from '../../../../components/payment/PayPalPayment';
-import { getUserData, clearCart } from '../../../../utils/localStorage';
+import { getUserData, clearCart, setCartData } from '../../../../utils/localStorage';
 
 const { Step } = Steps;
 
@@ -154,10 +154,10 @@ const CheckoutPage = () => {
         }
       };
 
-      console.log("Creating order with PayPal data:", data);
+      
+      //lay data gui ve BE de tao lich su giao dich don hang
       const rs = await orderService.create(data);
-      console.log("Order created successfully:", rs.data);
-
+      
       // Lưu orderId để hiển thị trong bước xác nhận
       setOrderId(rs.data._id);
 
@@ -167,7 +167,19 @@ const CheckoutPage = () => {
       // Cập nhật UI và xóa giỏ hàng
       setCurrentStep(2);
       message.success('Thanh toán thành công và đơn hàng đã được tạo');
+
+      // Xóa giỏ hàng cũ
       clearCart();
+
+      // Tạo giỏ hàng mới ngay lập tức
+      try {
+        console.log("Creating new cart after checkout...");
+        const cartResponse = await cartService.find();
+        console.log("New cart created:", cartResponse.data);
+        setCartData(cartResponse.data);
+      } catch (cartError) {
+        console.error("Error creating new cart:", cartError);
+      }
     } catch (error) {
       console.error('PayPal Payment Error:', error);
       message.error('Có lỗi xảy ra trong quá trình thanh toán: ' + (error instanceof Error ? error.message : 'Unknown error'));
@@ -342,6 +354,7 @@ const CheckoutPage = () => {
           <div className="border p-4 rounded-lg bg-gray-50">
             <PayPalPayment
               amount={calculateTotal()}
+              //goi onsuccess khi kq tra ve thanh toan thanh cong de tao don hang oder vao db
               onSuccess={handlePayPalSuccess}
             />
           </div>

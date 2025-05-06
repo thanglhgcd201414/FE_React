@@ -3,25 +3,28 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import cookiesStore from '../../../plugins/cookiesStore';
 import authService from '../../../services/authService';
 import Logo from '../../../components/icons/Logo';
 import { DEFINE_USER_ROUTERS } from '../../../constants/route-mapper';
-import { setUserData } from '../../../utils/localStorage';
+import { setUserData, setToken } from '../../../utils/localStorage';
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onFinish = async (values: { email: string, password: string }) => {
+  //================== từ form lấy ra email và password truyền vào values
+  //================ hoặc có thể hiểu là trong values có email và password
+const onFinish = async (values: { email: string, password: string }) => 
+  {
     try {
       setLoading(true);
+      // đi vào file services và đi đến function phía sau services này ( kèm truyền values )
       const response = await authService.login(values);
 
       if (response.data) {
         setUserData(response.data.user);
 
-        cookiesStore.set('access_token', response.data.accessToken);
+        setToken(response.data.accessToken);
 
         message.success('Đăng nhập thành công!');
         navigate(DEFINE_USER_ROUTERS.home);
@@ -39,7 +42,6 @@ const LoginPage: React.FC = () => {
         <Logo />
         <span className="text-2xl font-bold text-gray-900">WinMobile</span>
       </div>
-
       <Form
         name="login"
         initialValues={{ remember: true }}
@@ -47,7 +49,9 @@ const LoginPage: React.FC = () => {
         layout="vertical"
       >
         <Form.Item
+        // truyền giá trị này lên form ( values ở trên)
           name="email"
+        //  
           rules={[
             { required: true, message: 'Vui lòng nhập email!' },
             { type: 'email', message: 'Email không hợp lệ' },

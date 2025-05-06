@@ -45,11 +45,15 @@ const ProfilePage = () => {
   const handleSave = async (values: Partial<IUser>) => {
     try {
       setLoading(true);
-      const updatedUser = await profileService.updateProfile({
-        ...values,
-        avatar: avatarUrl,
-      });
+
+      const updatedUser = await profileService.updateProfile({...values, avatar: avatarUrl,});
+      // đổi tượng updateUser bên trên được tạo ra để chứa kết quả trả về từ BE
+
+      //lấy data từ đối tượng trên là đối tương updateuser
+      //sau đó truyền vào setUserDataState
       setUserDataState(updatedUser.data);
+//data được truyền vào setUserDataState sẽ được đẩy lên trên useState
+//setuserDataState sẽ được đẩy lên trên useState
       setUserData(updatedUser.data);
       setEditMode(false);
       message.success('Cập nhật hồ sơ thành công');
@@ -136,8 +140,6 @@ const ProfilePage = () => {
                 />
               </Form.Item>
             </Col>
-
-            {/* Phần địa chỉ giao hàng đã được loại bỏ theo yêu cầu */}
 
             {editMode && (
               <Col span={24} className="mt-6">

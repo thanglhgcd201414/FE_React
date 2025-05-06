@@ -35,6 +35,7 @@ export default function History() {
     handleGetListOrder();
   }, [query.page]);
 
+
   return (
     <Visibility
       visibility={orders.length}
